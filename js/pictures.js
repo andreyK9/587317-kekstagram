@@ -4,15 +4,7 @@ var galery = [];
 var LIKES_BEGIN = 15;
 var LIKES_END = 200;
 var COMMENTS_BEGIN = 1;
-var COMMENTS_END = 5;
-var descriptionOptions = [
-  'Тестим новую камеру!',
-  'Затусили с друзьями на море',
-  'Как же круто тут кормят',
-  'Отдыхаем...',
-  'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
-  'Вот это тачка!'
-];
+var COMMENTS_END = 4;
 
 function compareRandom(a, b) {
   return Math.random() - 0.5;
@@ -36,7 +28,16 @@ var randomComments = function () {
   return arr;
 };
 
-var randomDescription = function (descriptionOptions) {
+var randomDescription = function () {
+  var descriptionOptions = [
+    'Тестим новую камеру!',
+    'Затусили с друзьями на море',
+    'Как же круто тут кормят',
+    'Отдыхаем...',
+    'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+    'Вот это тачка!'
+  ];
+
   descriptionOptions.sort(compareRandom);
   return descriptionOptions[0];
 };
@@ -47,7 +48,7 @@ var createUsersBase = function (usersList) {
       url : 'photos/' + i + '.jpg',
       likes : randomInteger(LIKES_BEGIN, LIKES_END),
       comments : randomComments(),
-      description : randomDescription(descriptionOptions)
+      description : randomDescription()
     };
 
     usersList.push(usersPhoto);
