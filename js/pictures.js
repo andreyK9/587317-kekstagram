@@ -42,7 +42,7 @@ var randomDescription = function () {
   return descriptionOptions[0];
 };
 
-var createUsersBase = function (usersList) {
+var createPictureBase = function (usersList) {
   for (var i = 1; i <= 25; i++) {
     var usersPhoto = {
       url : 'photos/' + i + '.jpg',
@@ -55,6 +55,35 @@ var createUsersBase = function (usersList) {
   }
 };
 
-createUsersBase(galery);
+var createPictureItem = function (template, iteration) {
+  var item = template.cloneNode(true);
+  item.querySelector('img').src = galery[iteration].url;
+  item.querySelector('.picture__stat--likes').textContent = galery[iteration].likes;
+  item.querySelector('.picture__stat--comments').textContent = galery[iteration].comments.length;
 
-console.log(galery);
+  return item;
+};
+
+var createPictureList = function (galery) {
+  var fragment = document.createDocumentFragment();
+  var template = document.querySelector('#picture').content;
+
+  for (var i = 0; i < galery.length; i++) {
+    var picture = createPictureItem(template, i);
+    fragment.appendChild(picture);
+  }
+
+  return fragment;
+};
+
+var renderPictureList = function (fragment) {
+  var pictures = document.querySelector('.pictures');
+  pictures.appendChild(fragment);
+};
+
+createPictureBase(galery);
+
+var fragment = createPictureList(galery);
+
+renderPictureList(fragment);
+// console.log(galery);
