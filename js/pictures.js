@@ -84,10 +84,47 @@ var renderPictureList = function (fragment) {
   pictures.appendChild(fragment);
 };
 
+var renderBigPicture = function (galery) {
+  var bigPicture = document.querySelector('.big-picture');
+  var socialComments = document.querySelector('.social__comments');
+  var listComments = createElement('li', ['social__comment', 'social__comment--text'], galery[0].comments[0]);
+  var avatarComments = createElement('img', ['social__picture']);
 
+  bigPicture.classList.remove('hidden');
+  bigPicture.querySelector('.big-picture__img > img').src = galery[0].url;
+  bigPicture.querySelector('.likes-count').textContent = galery[0].likes;
+  var sterrr = bigPicture.querySelector('.social__caption').textContent = galery[0].description;
+  bigPicture.querySelector('.comments-count').textContent = galery[0].comments.length;
+
+  listComments.insertAdjacentElement('afterbegin', avatarComments);
+  socialComments.appendChild(listComments);
+};
+
+var createElement = function (tagName, className, text) {
+  var element = document.createElement(tagName);
+
+  for (var i = 0; i < className.length; i++) {
+    element.classList.add(className[i]);
+  }
+
+  if (text) {
+    element.textContent = galery[0].comments[0];
+  }
+
+  if (tagName === 'img') {
+    element.src = 'img/avatar-' + randomInteger(1,6) + '.svg';
+    element.alt = 'Аватар комментатора фотографии';
+    element.width='35';
+    element.height='35';
+  }
+
+  return element;
+};
 
 var galery = createPictureBase();
 
 var fragment = createPictureList(galery);
 
 renderPictureList(fragment);
+
+renderBigPicture(galery);
