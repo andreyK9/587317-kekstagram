@@ -1,6 +1,5 @@
 'use strict';
 
-var galery = [];
 var LIKES_BEGIN = 15;
 var LIKES_END = 200;
 var COMMENTS_BEGIN = 1;
@@ -42,7 +41,9 @@ var randomDescription = function () {
   return descriptionOptions[0];
 };
 
-var createPictureBase = function (usersList) {
+var createPictureBase = function () {
+  var galery = [];
+
   for (var i = 1; i <= 25; i++) {
     var usersPhoto = {
       url : 'photos/' + i + '.jpg',
@@ -51,8 +52,10 @@ var createPictureBase = function (usersList) {
       description : randomDescription()
     };
 
-    usersList.push(usersPhoto);
+    galery.push(usersPhoto);
   }
+
+  return galery;
 };
 
 var createPictureItem = function (template, iteration) {
@@ -81,9 +84,10 @@ var renderPictureList = function (fragment) {
   pictures.appendChild(fragment);
 };
 
-createPictureBase(galery);
+
+
+var galery = createPictureBase();
 
 var fragment = createPictureList(galery);
 
 renderPictureList(fragment);
-// console.log(galery);
