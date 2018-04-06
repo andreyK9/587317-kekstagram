@@ -6,9 +6,9 @@ var COMMENTS_BEGIN = 1;
 var COMMENTS_END = 4;
 
 // перемешивает массив комментариев
-function compareRandom() {
+var compareRandom = function () {
   return Math.random() - 0.5;
-}
+};
 
 // возращает случайное натуральное число в диапазоне от min до max
 var randomInteger = function (min, max) {
