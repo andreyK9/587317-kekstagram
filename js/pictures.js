@@ -6,13 +6,13 @@ var COMMENTS_BEGIN = 1;
 var COMMENTS_END = 4;
 
 // перемешивает массив комментариев
-function compareRandom(a, b) {
+function compareRandom() {
   return Math.random() - 0.5;
-};
+}
 
 // возращает случайное натуральное число в диапазоне от min до max
 var randomInteger = function (min, max) {
-  return Math.round( min - 0.5 + Math.random() * (max - min + 1));
+  return Math.round(min - 0.5 + Math.random() * (max - min + 1));
 };
 
 // создание случайных комментариев
@@ -51,10 +51,10 @@ var createPictureBase = function () {
 
   for (var i = 1; i <= 25; i++) {
     var usersPhoto = {
-      url : 'photos/' + i + '.jpg',
-      likes : randomInteger(LIKES_BEGIN, LIKES_END),
-      comments : randomComments(),
-      description : randomDescription()
+      url: 'photos/' + i + '.jpg',
+      likes: randomInteger(LIKES_BEGIN, LIKES_END),
+      comments: randomComments(),
+      description: randomDescription()
     };
 
     gallery.push(usersPhoto);
@@ -143,10 +143,10 @@ var createCommentElement = function (tagName, className, text) {
   }
 
   if (tagName === 'img') {
-    element.src = 'img/avatar-' + randomInteger(1,6) + '.svg';
+    element.src = 'img/avatar-' + randomInteger(1, 6) + '.svg';
     element.alt = 'Аватар комментатора фотографии';
-    element.width='35';
-    element.height='35';
+    element.width = '35';
+    element.height = '35';
   }
 
   return element;
