@@ -64,11 +64,11 @@ var createPictureBase = function () {
 };
 
 // заполнение данными одного изображения других пользователей
-var createPictureItem = function (template, iteration) {
+var createPictureItem = function (template, gallery) {
   var item = template.cloneNode(true);
-  item.querySelector('img').src = gallery[iteration].url;
-  item.querySelector('.picture__stat--likes').textContent = gallery[iteration].likes;
-  item.querySelector('.picture__stat--comments').textContent = gallery[iteration].comments.length;
+  item.querySelector('img').src = gallery.url;
+  item.querySelector('.picture__stat--likes').textContent = gallery.likes;
+  item.querySelector('.picture__stat--comments').textContent = gallery.comments.length;
 
   return item;
 };
@@ -79,7 +79,7 @@ var createPictureList = function (gallery) {
   var template = document.querySelector('#picture').content;
 
   for (var i = 0; i < gallery.length; i++) {
-    var picture = createPictureItem(template, i);
+    var picture = createPictureItem(template, gallery[i]);
     fragment.appendChild(picture);
   }
 
