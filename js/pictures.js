@@ -4,6 +4,8 @@ var LIKES_BEGIN = 15;
 var LIKES_END = 200;
 var COMMENTS_BEGIN = 1;
 var COMMENTS_END = 4;
+var PICTURE_START = 1;
+var PICTURE_END = 25;
 
 // перемешивает массив комментариев
 var compareRandom = function () {
@@ -49,7 +51,7 @@ var randomDescription = function () {
 var createPictureBase = function () {
   var gallery = [];
 
-  for (var i = 1; i <= 25; i++) {
+  for (var i = PICTURE_START; i <= PICTURE_END; i++) {
     var usersPhoto = {
       url: 'photos/' + i + '.jpg',
       likes: randomInteger(LIKES_BEGIN, LIKES_END),
