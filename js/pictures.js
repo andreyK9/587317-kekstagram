@@ -1,11 +1,8 @@
 'use strict';
 
-var LIKES_BEGIN = 15;
-var LIKES_END = 200;
-var COMMENTS_BEGIN = 1;
-var COMMENTS_END = 4;
-var PICTURE_START = 1;
-var PICTURE_END = 25;
+var LIKES_RANGE = [15, 200];
+var COMMENTS_RANGE = [1, 4];
+var PICTURE_RANGE = [1, 25];
 
 // перемешивает массив комментариев
 var compareRandom = function () {
@@ -13,8 +10,8 @@ var compareRandom = function () {
 };
 
 // возращает случайное натуральное число в диапазоне от min до max
-var randomInteger = function (min, max) {
-  return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+var randomInteger = function (value) {
+  return Math.round(value[0] - 0.5 + Math.random() * (value[1] - value[0] + 1));
 };
 
 // создание случайных комментариев
@@ -27,7 +24,7 @@ var randomComments = function () {
   ];
 
   arr.sort(compareRandom);
-  arr.length = randomInteger(COMMENTS_BEGIN, COMMENTS_END);
+  arr.length = randomInteger(COMMENTS_RANGE);
 
   return arr;
 };
@@ -51,10 +48,10 @@ var randomDescription = function () {
 var createPictureBase = function () {
   var gallery = [];
 
-  for (var i = PICTURE_START; i <= PICTURE_END; i++) {
+  for (var i = PICTURE_RANGE[0]; i <= PICTURE_RANGE[1]; i++) {
     var usersPhoto = {
       url: 'photos/' + i + '.jpg',
-      likes: randomInteger(LIKES_BEGIN, LIKES_END),
+      likes: randomInteger(LIKES_RANGE),
       comments: randomComments(),
       description: randomDescription()
     };
