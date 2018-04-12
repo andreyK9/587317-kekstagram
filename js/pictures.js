@@ -2,36 +2,14 @@
 
 var LIKES_RANGE = [15, 200];
 var COMMENTS_RANGE = [1, 4];
-var PICTURE_RANGE = [1, 25];
-
-// перемешивает массив комментариев
-var compareRandom = function () {
-  return Math.random() - 0.5;
-};
-
-// возращает случайное натуральное число в диапазоне от min до max
-var randomInteger = function (value) {
-  return Math.round(value[0] - 0.5 + Math.random() * (value[1] - value[0] + 1));
-};
-
-// создание случайных комментариев
-var randomComments = function () {
-  var arr = [
+var PICTURE_RANGE = 25;
+var ARRAY_COMMENT = [
     'В целом всё неплохо. Но не всё.',
     'Всё отлично!',
     'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
     'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше'
   ];
-
-  arr.sort(compareRandom);
-  arr.length = randomInteger(COMMENTS_RANGE);
-
-  return arr;
-};
-
-// создание случайной подписи для изображения
-var randomDescription = function () {
-  var descriptionOptions = [
+var ARRAY_DESCRIPTION = [
     'Тестим новую камеру!',
     'Затусили с друзьями на море',
     'Как же круто тут кормят',
@@ -40,55 +18,78 @@ var randomDescription = function () {
     'Вот это тачка!'
   ];
 
-  descriptionOptions.sort(compareRandom);
-  return descriptionOptions[0];
+// генерирует случайное число от -0.5 до 0.5
+var getCompareRandom = function () {
+  return Math.random() - 0.5;
 };
 
-// создание базы данных других пользователей
-var createPictureBase = function () {
-  var gallery = [];
+// возращает случайное натуральное число в диапазоне от min до max
+var getRandomInteger = function (min, max) {
+  return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+};
 
-  for (var i = PICTURE_RANGE[0]; i <= PICTURE_RANGE[1]; i++) {
-    var usersPhoto = {
-      url: 'photos/' + i + '.jpg',
-      likes: randomInteger(LIKES_RANGE),
-      comments: randomComments(),
-      description: randomDescription()
-    };
+// перемешивает массив
+var shuffle = function (arr) {
+  return arr.sort(getCompareRandom);
+};
 
-    gallery.push(usersPhoto);
+// копирует часть массива
+var copyArray = function (arr, max) {
+  if(!max) {
+    return arr.slice();
   }
 
-  return gallery;
+  return arr.slice(0, max);
+}
+
+// создает параметры фото
+var createFotoObject = function (value) {
+  return {
+      url: 'photos/' + value + '.jpg',
+      likes: getRandomInteger(LIKES_RANGE[0], LIKES_RANGE[1]),
+      comments: copyArray(shuffle(ARRAY_COMMENT), getRandomInteger(1,4)),
+      description: shuffle(ARRAY_DESCRIPTION)[0]
+    }
 };
 
-// заполнение данными одного изображения других пользователей
-var createPictureItem = function (template, gallery) {
-  var item = template.cloneNode(true);
-  item.querySelector('img').src = gallery.url;
-  item.querySelector('.picture__stat--likes').textContent = gallery.likes;
-  item.querySelector('.picture__stat--comments').textContent = gallery.comments.length;
+// заполняет галерею параметрами
+var fillGalary = function () {
+  var arr = [];
 
-  return item;
-};
-
-// создание массива всех изображений других пользователей
-var createPictureList = function (gallery) {
-  var fragment = document.createDocumentFragment();
-  var template = document.querySelector('#picture').content;
-
-  for (var i = 0; i < gallery.length; i++) {
-    var picture = createPictureItem(template, gallery[i]);
-    fragment.appendChild(picture);
+  for (var i = 1; i <= PICTURE_RANGE; i++) {
+    arr.push(createFotoObject(i));
   }
 
-  return fragment;
+  return arr;
 };
 
-// отрисовка всех изображений других пользователей
-var renderPictureList = function (fragment) {
-  var pictures = document.querySelector('.pictures');
-  pictures.appendChild(fragment);
+// заполнение данными одного изображения
+var createFotoElement = function (object) {
+  var temp = document.querySelector('#picture').content.cloneNode(true);
+
+  temp.querySelector('img').src = object.url;
+  temp.querySelector('.picture__stat--likes').textContent = object.likes;
+  temp.querySelector('.picture__stat--comments').textContent = object.comments.length;
+
+  return temp;
+};
+
+// создание шаблона изображений
+var fillFotoTemplate = function (arr) {
+  var template = document.createDocumentFragment();
+
+  for (var i = 0; i < arr.length; i++) {
+    var foto = createFotoElement(arr[i]);
+    template.appendChild(foto);
+  }
+
+  return template;
+};
+
+// отрисовка всех изображений
+var renderGalary = function (template) {
+  var block = document.querySelector('.pictures');
+  block.appendChild(template);
 };
 
 // заполнение всех данных Большого фото
@@ -110,13 +111,12 @@ var renderBigPictureText = function (gallery) {
   var socialComments = document.querySelector('.social__comments');
   var listComments = createComments(gallery[0].comments[0]);
 
+  createBigPictureProperties(bigPicture);
+  socialComments.appendChild(listComments);
+
   bigPicture.classList.remove('hidden');
   hiddenElementComments(bigPicture, 'social__comment-count');
   hiddenElementComments(bigPicture, 'social__comment-loadmore');
-
-  createBigPictureProperties(bigPicture);
-
-  socialComments.appendChild(listComments);
 };
 
 // создание блока комментария
@@ -125,7 +125,6 @@ var createComments = function (text) {
   var avatarComment = createCommentElement('img', ['social__picture']);
 
   сomment.insertAdjacentElement('afterbegin', avatarComment);
-
   return сomment;
 };
 
@@ -142,7 +141,7 @@ var createCommentElement = function (tagName, className, text) {
   }
 
   if (tagName === 'img') {
-    element.src = 'img/avatar-' + randomInteger(1, 6) + '.svg';
+    element.src = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
     element.alt = 'Аватар комментатора фотографии';
     element.width = '35';
     element.height = '35';
@@ -151,7 +150,7 @@ var createCommentElement = function (tagName, className, text) {
   return element;
 };
 
-var gallery = createPictureBase();
-var fragmentPicture = createPictureList(gallery);
-renderPictureList(fragmentPicture);
+var gallery = fillGalary();
+var fotoTemplate = fillFotoTemplate(gallery);
+renderGalary(fotoTemplate);
 renderBigPictureText(gallery);
