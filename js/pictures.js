@@ -34,7 +34,7 @@ var shuffle = function (arr) {
 };
 
 // копирует часть массива
-var copyArray = function (arr, max) {
+var getCopyArray = function (arr, max) {
   if(!max) {
     return arr.slice();
   }
@@ -42,18 +42,18 @@ var copyArray = function (arr, max) {
   return arr.slice(0, max);
 }
 
-// создает параметры фото
+// создает обьект фото
 var createFotoObject = function (value) {
   return {
       url: 'photos/' + value + '.jpg',
       likes: getRandomInteger(LIKES_RANGE[0], LIKES_RANGE[1]),
-      comments: copyArray(shuffle(ARRAY_COMMENT), getRandomInteger(1,4)),
+      comments: getCopyArray(shuffle(ARRAY_COMMENT), getRandomInteger(1,4)),
       description: shuffle(ARRAY_DESCRIPTION)[0]
     }
 };
 
-// заполняет галерею параметрами
-var fillGalary = function () {
+// заполняет галерею данными
+var fillGalaryData = function () {
   var arr = [];
 
   for (var i = 1; i <= PICTURE_RANGE; i++) {
@@ -63,8 +63,8 @@ var fillGalary = function () {
   return arr;
 };
 
-// заполнение данными одного изображения
-var createFotoElement = function (object) {
+// заполнение данными изображения
+var getFotoTemplate = function (object) {
   var temp = document.querySelector('#picture').content.cloneNode(true);
 
   temp.querySelector('img').src = object.url;
@@ -74,63 +74,42 @@ var createFotoElement = function (object) {
   return temp;
 };
 
-// создание шаблона изображений
-var fillFotoTemplate = function (arr) {
+// заполнение шаблона изображений
+var fillGalaryTemplate = function (arr) {
   var template = document.createDocumentFragment();
 
   for (var i = 0; i < arr.length; i++) {
-    var foto = createFotoElement(arr[i]);
+    var foto = getFotoTemplate(arr[i]);
     template.appendChild(foto);
   }
 
   return template;
 };
 
-// отрисовка всех изображений
+// отрисовка галереи
 var renderGalary = function (template) {
   var block = document.querySelector('.pictures');
   block.appendChild(template);
 };
 
-// заполнение всех данных Большого фото
-var createBigPictureProperties = function (bigPicture) {
-  bigPicture.querySelector('.big-picture__img > img').src = gallery[0].url;
-  bigPicture.querySelector('.likes-count').textContent = gallery[0].likes;
-  bigPicture.querySelector('.social__caption').textContent = gallery[0].description;
-  bigPicture.querySelector('.comments-count').textContent = gallery[0].comments.length;
+// заполнение иконки аватара атрибутами
+var setAvatarAttr = function (img) {
+  img.src = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
+  img.alt = 'Аватар комментатора фотографии';
+  img.width = '35';
+  img.height = '35';
 };
 
-// скрывает элементы в блоке коментариев
-var hiddenElementComments = function (bigPicture, className) {
-  bigPicture.querySelector('.' + className).classList.add('visually-hidden');
+// создание иконки аватара
+var createAvatarIcon = function (className, text) {
+  var icon = createTag('img', className, text);
+  setAvatarAttr(icon);
+  return icon;
 };
 
-// отрисовка всех данных других пользователей в Большое фото
-var renderBigPictureText = function (gallery) {
-  var bigPicture = document.querySelector('.big-picture');
-  var socialComments = document.querySelector('.social__comments');
-  var listComments = createComments(gallery[0].comments[0]);
-
-  createBigPictureProperties(bigPicture);
-  socialComments.appendChild(listComments);
-
-  bigPicture.classList.remove('hidden');
-  hiddenElementComments(bigPicture, 'social__comment-count');
-  hiddenElementComments(bigPicture, 'social__comment-loadmore');
-};
-
-// создание блока комментария
-var createComments = function (text) {
-  var сomment = createCommentElement('li', ['social__comment', 'social__comment--text'], text);
-  var avatarComment = createCommentElement('img', ['social__picture']);
-
-  сomment.insertAdjacentElement('afterbegin', avatarComment);
-  return сomment;
-};
-
-// создание одного элемента блока комментариев
-var createCommentElement = function (tagName, className, text) {
-  var element = document.createElement(tagName);
+// создание тега
+var createTag = function (tag, className, text) {
+  var element = document.createElement(tag);
 
   for (var i = 0; i < className.length; i++) {
     element.classList.add(className[i]);
@@ -140,17 +119,41 @@ var createCommentElement = function (tagName, className, text) {
     element.textContent = text;
   }
 
-  if (tagName === 'img') {
-    element.src = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
-    element.alt = 'Аватар комментатора фотографии';
-    element.width = '35';
-    element.height = '35';
-  }
-
   return element;
 };
 
-var gallery = fillGalary();
-var fotoTemplate = fillFotoTemplate(gallery);
-renderGalary(fotoTemplate);
-renderBigPictureText(gallery);
+// заполнение данными Большого фото
+var fillBigFoto = function (element, object) {
+  element.querySelector('.big-picture__img > img').src = object.url;
+  element.querySelector('.likes-count').textContent = object.likes;
+  element.querySelector('.social__caption').textContent = object.description;
+  element.querySelector('.comments-count').textContent = object.comments.length;
+};
+
+// создание блока комментария
+var createComment = function (text) {
+  var li = createTag('li', ['social__comment', 'social__comment--text'], text);
+  var img = createAvatarIcon(['social__picture']);
+
+  li.insertAdjacentElement('afterbegin', img);
+  return li;
+};
+
+// отрисовка Большого фото
+var renderBigfoto = function (object) {
+  var bigPicture = document.querySelector('.big-picture');
+  var commentBlock = document.querySelector('.social__comments');
+  var comment = createComment(object.comments[0]);
+
+  fillBigFoto(bigPicture, object);
+  commentBlock.appendChild(comment);
+
+  bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
+  bigPicture.classList.remove('hidden');
+};
+
+var galleryData = fillGalaryData();
+var galaryTemplate = fillGalaryTemplate(galleryData);
+renderGalary(galaryTemplate);
+renderBigfoto(galleryData[0]);
