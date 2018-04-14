@@ -1,22 +1,21 @@
 'use strict';
 
 var LIKES_RANGE = [15, 200];
-var COMMENTS_RANGE = [1, 4];
 var PICTURE_RANGE = 25;
 var ARRAY_COMMENT = [
-    'В целом всё неплохо. Но не всё.',
-    'Всё отлично!',
-    'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-    'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше'
-  ];
+  'В целом всё неплохо. Но не всё.',
+  'Всё отлично!',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше'
+];
 var ARRAY_DESCRIPTION = [
-    'Тестим новую камеру!',
-    'Затусили с друзьями на море',
-    'Как же круто тут кормят',
-    'Отдыхаем...',
-    'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
-    'Вот это тачка!'
-  ];
+  'Тестим новую камеру!',
+  'Затусили с друзьями на море',
+  'Как же круто тут кормят',
+  'Отдыхаем...',
+  'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
+  'Вот это тачка!'
+];
 
 // генерирует случайное число от -0.5 до 0.5
 var getCompareRandom = function () {
@@ -35,21 +34,21 @@ var shuffle = function (arr) {
 
 // копирует часть массива
 var getCopyArray = function (arr, max) {
-  if(!max) {
+  if (!max) {
     return arr.slice();
   }
 
   return arr.slice(0, max);
-}
+};
 
 // создает обьект фото
 var createFotoObject = function (value) {
   return {
-      url: 'photos/' + value + '.jpg',
-      likes: getRandomInteger(LIKES_RANGE[0], LIKES_RANGE[1]),
-      comments: getCopyArray(shuffle(ARRAY_COMMENT), getRandomInteger(1,4)),
-      description: shuffle(ARRAY_DESCRIPTION)[0]
-    }
+    url: 'photos/' + value + '.jpg',
+    likes: getRandomInteger(LIKES_RANGE[0], LIKES_RANGE[1]),
+    comments: getCopyArray(shuffle(ARRAY_COMMENT), getRandomInteger(1, 4)),
+    description: shuffle(ARRAY_DESCRIPTION)[0]
+  };
 };
 
 // заполняет галерею данными
