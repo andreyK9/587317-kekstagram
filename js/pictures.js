@@ -52,7 +52,7 @@ var createPhotoObject = function (value) {
 };
 
 // заполняет галерею данными
-var fillGalaryData = function () {
+var fillGalleryData = function () {
   var arr = [];
 
   for (var i = 1; i <= PICTURE_RANGE; i++) {
@@ -74,7 +74,7 @@ var getPhotoTemplate = function (object) {
 };
 
 // заполнение шаблона изображений
-var fillGalaryTemplate = function (arr) {
+var fillGalleryTemplate = function (arr) {
   var template = document.createDocumentFragment();
 
   for (var i = 0; i < arr.length; i++) {
@@ -86,7 +86,7 @@ var fillGalaryTemplate = function (arr) {
 };
 
 // отрисовка галереи
-var renderGalary = function (template) {
+var renderGallery = function (template) {
   var block = document.querySelector('.pictures');
   block.appendChild(template);
 };
@@ -152,7 +152,7 @@ var renderBigPhoto = function (object) {
   bigPicture.classList.remove('hidden');
 };
 
-var galleryData = fillGalaryData();
-var galaryTemplate = fillGalaryTemplate(galleryData);
-renderGalary(galaryTemplate);
+var galleryData = fillGalleryData();
+var galleryTemplate = fillGalleryTemplate(galleryData);
+renderGallery(galleryTemplate);
 renderBigPhoto(galleryData[0]);
