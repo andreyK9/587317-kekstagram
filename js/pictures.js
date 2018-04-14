@@ -42,7 +42,7 @@ var getCopyArray = function (arr, max) {
 };
 
 // создает обьект фото
-var createFotoObject = function (value) {
+var createPhotoObject = function (value) {
   return {
     url: 'photos/' + value + '.jpg',
     likes: getRandomInteger(LIKES_RANGE[0], LIKES_RANGE[1]),
@@ -56,14 +56,14 @@ var fillGalaryData = function () {
   var arr = [];
 
   for (var i = 1; i <= PICTURE_RANGE; i++) {
-    arr.push(createFotoObject(i));
+    arr.push(createPhotoObject(i));
   }
 
   return arr;
 };
 
 // заполнение данными изображения
-var getFotoTemplate = function (object) {
+var getPhotoTemplate = function (object) {
   var temp = document.querySelector('#picture').content.cloneNode(true);
 
   temp.querySelector('img').src = object.url;
@@ -78,8 +78,8 @@ var fillGalaryTemplate = function (arr) {
   var template = document.createDocumentFragment();
 
   for (var i = 0; i < arr.length; i++) {
-    var foto = getFotoTemplate(arr[i]);
-    template.appendChild(foto);
+    var photo = getPhotoTemplate(arr[i]);
+    template.appendChild(photo);
   }
 
   return template;
@@ -122,7 +122,7 @@ var createTag = function (tag, className, text) {
 };
 
 // заполнение данными Большого фото
-var fillBigFoto = function (element, object) {
+var fillBigPhoto = function (element, object) {
   element.querySelector('.big-picture__img > img').src = object.url;
   element.querySelector('.likes-count').textContent = object.likes;
   element.querySelector('.social__caption').textContent = object.description;
@@ -130,7 +130,7 @@ var fillBigFoto = function (element, object) {
 };
 
 // создание блока комментария
-var createComment = function (text) {
+var createLi = function (text) {
   var li = createTag('li', ['social__comment', 'social__comment--text'], text);
   var img = createAvatarIcon(['social__picture']);
 
@@ -139,12 +139,12 @@ var createComment = function (text) {
 };
 
 // отрисовка Большого фото
-var renderBigfoto = function (object) {
+var renderBigPhoto = function (object) {
   var bigPicture = document.querySelector('.big-picture');
   var commentBlock = document.querySelector('.social__comments');
-  var comment = createComment(object.comments[0]);
+  var comment = createLi(object.comments[0]);
 
-  fillBigFoto(bigPicture, object);
+  fillBigPhoto(bigPicture, object);
   commentBlock.appendChild(comment);
 
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
@@ -155,4 +155,4 @@ var renderBigfoto = function (object) {
 var galleryData = fillGalaryData();
 var galaryTemplate = fillGalaryTemplate(galleryData);
 renderGalary(galaryTemplate);
-renderBigfoto(galleryData[0]);
+renderBigPhoto(galleryData[0]);
