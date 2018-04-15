@@ -16,6 +16,47 @@ var ARRAY_DESCRIPTION = [
   'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
   'Вот это тачка!'
 ];
+var imgUpload = document.querySelector('.img-upload');
+var uploadFile = imgUpload.querySelector('#upload-file');
+var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
+var uploadCancel = imgOverlay.querySelector('#upload-cancel');
+var btnUp = imgOverlay.querySelector('.resize__control--plus');
+var btnDown = imgOverlay.querySelector('.resize__control--minus');
+var resizeControl = imgOverlay.querySelector('.resize__control--value');
+
+uploadFile.addEventListener('change', function () {
+  imgOverlay.classList.remove('hidden');
+});
+
+uploadCancel.addEventListener('click', function () {
+  imgOverlay.classList.add('hidden');
+  uploadFile.value = '';
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 27) {
+    imgOverlay.classList.add('hidden');
+    uploadFile.value = '';
+  }
+});
+
+btnUp.addEventListener('click', function () {
+  var value = +resizeControl.value.slice(0, -1);
+  if (value > 75) {
+    return value;
+  }
+  resizeControl.value = value + 25 + '%';
+});
+
+btnDown.addEventListener('click', function () {
+  var value = +resizeControl.value.slice(0, -1);
+  if (value < 50) {
+    return value;
+  }
+  resizeControl.value = value - 25 + '%';
+});
+
+
 
 // генерирует случайное число от -0.5 до 0.5
 var getCompareRandom = function () {
@@ -155,4 +196,4 @@ var renderBigPhoto = function (object) {
 var galleryData = fillGalleryData();
 var galleryTemplate = fillGalleryTemplate(galleryData);
 renderGallery(galleryTemplate);
-renderBigPhoto(galleryData[0]);
+// renderBigPhoto(galleryData[0]);
