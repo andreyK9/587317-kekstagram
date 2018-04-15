@@ -23,6 +23,7 @@ var uploadCancel = imgOverlay.querySelector('#upload-cancel');
 var btnUp = imgOverlay.querySelector('.resize__control--plus');
 var btnDown = imgOverlay.querySelector('.resize__control--minus');
 var resizeControl = imgOverlay.querySelector('.resize__control--value');
+var imgPreview = imgOverlay.querySelector('.img-upload__preview > img');
 
 uploadFile.addEventListener('change', function () {
   imgOverlay.classList.remove('hidden');
@@ -45,7 +46,12 @@ btnUp.addEventListener('click', function () {
   if (value > 75) {
     return value;
   }
-  resizeControl.value = value + 25 + '%';
+  var result = value + 25;
+  resizeControl.value = result + '%';
+  if(result === 100) {
+    return imgPreview.style.transform = '';
+  }
+  imgPreview.style.transform = 'scale(' + result/100 + ')';
 });
 
 btnDown.addEventListener('click', function () {
@@ -53,7 +59,9 @@ btnDown.addEventListener('click', function () {
   if (value < 50) {
     return value;
   }
-  resizeControl.value = value - 25 + '%';
+  var result = value - 25;
+  imgPreview.style.transform = 'scale(' + result/100 + ')';
+  resizeControl.value = result + '%';
 });
 
 
