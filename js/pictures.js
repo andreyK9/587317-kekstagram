@@ -24,6 +24,7 @@ var btnUp = imgOverlay.querySelector('.resize__control--plus');
 var btnDown = imgOverlay.querySelector('.resize__control--minus');
 var resizeControl = imgOverlay.querySelector('.resize__control--value');
 var imgPreview = imgOverlay.querySelector('.img-upload__preview > img');
+var effectsImg = imgOverlay.querySelector('.effects__list');
 
 uploadFile.addEventListener('change', function () {
   imgOverlay.classList.remove('hidden');
@@ -64,6 +65,10 @@ btnDown.addEventListener('click', function () {
   resizeControl.value = result + '%';
 });
 
+effectsImg.addEventListener('click', function (evt) {
+  var value = evt.target.value;
+  imgPreview.setAttribute('class', 'effects__preview--' + value);
+});
 
 
 // генерирует случайное число от -0.5 до 0.5
