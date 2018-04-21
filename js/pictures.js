@@ -2,6 +2,7 @@
 
 var LIKES_RANGE = [15, 200];
 var PICTURE_RANGE = 25;
+var ESC_CODE = 27;
 var DEFAULT_POSITION = 100;
 var ARRAY_COMMENT = [
   'В целом всё неплохо. Но не всё.',
@@ -83,8 +84,53 @@ var getFilter = function (obj, value) {
 var setFilter = function (value, result) {
   var modif = value.split('--').pop();
   var insert = imgPreview.style;
-
   insert.cssText = getFilter(filterGroup[modif], result);
+};
+
+var openPopup = function (evt) {
+  var classList = evt.target.classList;
+  var value = classList.value;
+
+  if (value.search('cancel') > 0) {
+    imgOverlay.classList.add('hidden');
+    uploadFile.value = '';
+  }
+
+  if (value.search('resize__control--plus') > 0) {
+    var valuePlus = +resizeControl.value.slice(0, -1);
+    if (valuePlus > 75) {
+      return valuePlus;
+    }
+    valuePlus += 25;
+    resizeControl.value = valuePlus + '%';
+    if(valuePlus === 100) {
+      return imgPreview.style.transform = '';
+    }
+    imgPreview.style.transform = 'scale(' + valuePlus/100 + ')';
+  }
+
+  if (value.search('resize__control--minus') > 0) {
+    var valueMinus = +resizeControl.value.slice(0, -1);
+    if (valueMinus < 50) {
+      return valueMinus;
+    }
+    valueMinus -= 25;
+    resizeControl.value = valueMinus + '%';
+    imgPreview.style.transform = 'scale(' + valueMinus/100 + ')';
+  }
+
+  if (value.search('effects__radio') >= 0) {
+    var valueEffect = evt.target.value;
+    imgPreview.style.filter = '';
+    setScale(DEFAULT_POSITION);
+
+    imgPreview.setAttribute('class', 'effects__preview--' + valueEffect);
+    if (imgPreview.classList.value === 'effects__preview--none') {
+      scale.classList.add('hidden');
+    } else {
+      scale.classList.remove('hidden');
+    }
+  }
 };
 
 uploadFile.addEventListener('change', function () {
@@ -92,50 +138,10 @@ uploadFile.addEventListener('change', function () {
   scale.classList.add('hidden');
 });
 
-uploadCancel.addEventListener('click', function () {
-  imgOverlay.classList.add('hidden');
-  uploadFile.value = '';
-});
-
 document.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 27) {
+  if (evt.keyCode === ESC_CODE) {
     imgOverlay.classList.add('hidden');
     uploadFile.value = '';
-  }
-});
-
-btnUp.addEventListener('click', function () {
-  var value = +resizeControl.value.slice(0, -1);
-  if (value > 75) {
-    return value;
-  }
-  var result = value + 25;
-  resizeControl.value = result + '%';
-  if(result === 100) {
-    return imgPreview.style.transform = '';
-  }
-  imgPreview.style.transform = 'scale(' + result/100 + ')';
-});
-
-btnDown.addEventListener('click', function () {
-  var value = +resizeControl.value.slice(0, -1);
-  if (value < 50) {
-    return value;
-  }
-  var result = value - 25;
-  imgPreview.style.transform = 'scale(' + result/100 + ')';
-  resizeControl.value = result + '%';
-});
-
-effectsImg.addEventListener('click', function (evt) {
-  var value = evt.target.value;
-  imgPreview.style.filter = '';
-  setScale(DEFAULT_POSITION);
-  imgPreview.setAttribute('class', 'effects__preview--' + value);
-  if (imgPreview.classList.value === 'effects__preview--none') {
-    scale.classList.add('hidden');
-  } else {
-    scale.classList.remove('hidden');
   }
 });
 
@@ -143,24 +149,11 @@ scaleLine.addEventListener('mouseup', function (evt) {
   var result = getScale(evt);
   setScale(result);
   setFilter(imgPreview.classList.value, result);
-
-  // if (imgPreview.classList.value === 'effects__preview--chrome') {
-  //   imgPreview.style.cssText = 'filter: grayscale(' + result / 100 + ')';
-  // }
-  // if (imgPreview.classList.value === 'effects__preview--sepia') {
-  //   imgPreview.style.cssText = 'filter: sepia(' + result / 100 + ')';
-  // }
-  // if (imgPreview.classList.value === 'effects__preview--marvin') {
-  //   imgPreview.style.cssText = 'filter: invert(' + result + '%)';
-  // }
-  // if (imgPreview.classList.value === 'effects__preview--phobos') {
-  //   imgPreview.style.cssText = 'filter: blur(' + result / 100 * 3 + 'px)';
-  // }
-  // if (imgPreview.classList.value === 'effects__preview--heat') {
-  //   imgPreview.style.cssText = 'filter: brightness(' + result / 100 * 3 + ')';
-  // }
 });
 
+document.addEventListener('click', function (evt) {
+  openPopup(evt);
+});
 
 // генерирует случайное число от -0.5 до 0.5
 var getCompareRandom = function () {
