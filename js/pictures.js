@@ -78,7 +78,7 @@ var setScale = function (value) {
   scalePin.style.left = value + '%';
   scaleLevel.style.width = value + '%';
   scaleValue.value = value;
-}
+};
 
 var changeScale = function (evt) {
   var result = getScale(evt);
@@ -107,37 +107,40 @@ var closePopup = function () {
 };
 
 var setSizeUp = function (evt) {
-  if(resize.children[2] === evt.target) {
+  if (resize.children[2] === evt.target) {
     var value = +resizeControl.value.slice(0, -1);
     if (value > 75) {
       return value;
     }
     value += 25;
     resizeControl.value = value + '%';
-    if(value === 100) {
-      return imgPreview.style.transform = '';
+    if (value === 100) {
+      imgPreview.style.transform = '';
+      return false;
     }
-    imgPreview.style.transform = 'scale(' + value/100 + ')';
+    imgPreview.style.transform = 'scale(' + value / 100 + ')';
   }
+
+  return false;
 };
 
 var setSizeDown = function (evt) {
-  if(resize.children[0] === evt.target) {
+  if (resize.children[0] === evt.target) {
     var value = +resizeControl.value.slice(0, -1);
     if (value < 50) {
       return value;
     }
     value -= 25;
     resizeControl.value = value + '%';
-    imgPreview.style.transform = 'scale(' + value/100 + ')';
+    imgPreview.style.transform = 'scale(' + value / 100 + ')';
   }
+  return value;
 };
 
 var setEffect = function (evt) {
   var value = evt.target.value;
   imgPreview.style.filter = '';
   setScale(DEFAULT_POSITION);
-  console.dir('effects');
   imgPreview.setAttribute('class', 'effects__preview--' + value);
 
   if (imgPreview.classList.value === 'effects__preview--none') {
@@ -145,14 +148,14 @@ var setEffect = function (evt) {
   } else {
     scale.classList.remove('hidden');
   }
-}
+};
 
 var isCorrect = function (evt, obj) {
   var target = evt.target;
   var result;
   if (evt.type === 'click') {
-     result = obj === target;
-     return result;
+    result = obj === target;
+    return result;
   }
   return evt.keyCode === ENTER_CODE && obj === target;
 };
@@ -298,7 +301,7 @@ var getCommentList = function (object) {
     template.appendChild(createLi(object.comments[i]));
   }
   return template;
-}
+};
 
 // создание блока комментария
 var createLi = function (text) {
@@ -326,7 +329,7 @@ var renderBigPhoto = function (object) {
 
 var closePicture = function (evt) {
   var cancel = bigPicture.querySelector('.big-picture__cancel');
-  if(evt.target === cancel) {
+  if (evt.target === cancel) {
     if (evt.keyCode === ESC_CODE) {
       bigPicture.classList.add('hidden');
     } else {
@@ -343,9 +346,8 @@ var pictureLink = document.querySelectorAll('.picture__link');
 
 for (var i = 0; i < pictureLink.length; i++) {
   pictureLink[i].addEventListener('click', function (evt) {
-    console.dir(evt);
 
-    if(evt.target.parentElement.dataset.number) {
+    if (evt.target.parentElement.dataset.number) {
       renderBigPhoto(galleryData[evt.target.parentElement.dataset.number]);
     }
 
