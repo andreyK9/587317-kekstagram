@@ -2,6 +2,7 @@
 
 var LIKES_RANGE = [15, 200];
 var PICTURE_RANGE = 25;
+var RESIZE_STEP = 25;
 var ESC_CODE = 27;
 var ENTER_CODE = 13;
 var DEFAULT_POSITION = 100;
@@ -67,6 +68,7 @@ var scaleLine = scale.querySelector('.scale__line');
 var scaleLevel = scale.querySelector('.scale__level');
 var scaleValue = scale.querySelector('.scale__value');
 var bigPicture = document.querySelector('.big-picture');
+var cancel = bigPicture.querySelector('.big-picture__cancel');
 
 var getScale = function (event) {
   var x = event.offsetX;
@@ -78,6 +80,14 @@ var setScale = function (value) {
   scalePin.style.left = value + '%';
   scaleLevel.style.width = value + '%';
   scaleValue.value = value;
+};
+
+var togleScale = function () {
+  if (imgPreview.classList.value === 'effects__preview--none') {
+    scale.classList.add('hidden');
+  } else {
+    scale.classList.remove('hidden');
+  }
 };
 
 var changeScale = function (evt) {
@@ -106,35 +116,28 @@ var closePopup = function () {
   document.removeEventListener('keydown', uploadImg);
 };
 
-var setSizeUp = function (evt) {
-  if (resize.children[2] === evt.target) {
-    var value = +resizeControl.value.slice(0, -1);
-    if (value > 75) {
-      return value;
-    }
-    value += 25;
-    resizeControl.value = value + '%';
-    if (value === 100) {
-      imgPreview.style.transform = '';
-      return false;
-    }
-    imgPreview.style.transform = 'scale(' + value / 100 + ')';
+var setResize = function (value) {
+  resizeControl.value = value + '%';
+  if (value === 100) {
+    return imgPreview.style.transform = '';
   }
+  return imgPreview.style.transform = 'scale(' + value / 100 + ')';
+};
 
-  return false;
+var setSizeUp = function (evt) {
+  var value = +resizeControl.value.slice(0, -1);
+  if (value > 75) {
+    return value;
+  }
+  return setResize(value + RESIZE_STEP);
 };
 
 var setSizeDown = function (evt) {
-  if (resize.children[0] === evt.target) {
-    var value = +resizeControl.value.slice(0, -1);
-    if (value < 50) {
-      return value;
-    }
-    value -= 25;
-    resizeControl.value = value + '%';
-    imgPreview.style.transform = 'scale(' + value / 100 + ')';
+  var value = +resizeControl.value.slice(0, -1);
+  if (value < 50) {
+    return value;
   }
-  return value;
+  return setResize(value - RESIZE_STEP);
 };
 
 var setEffect = function (evt) {
@@ -143,21 +146,14 @@ var setEffect = function (evt) {
   setScale(DEFAULT_POSITION);
   imgPreview.setAttribute('class', 'effects__preview--' + value);
 
-  if (imgPreview.classList.value === 'effects__preview--none') {
-    scale.classList.add('hidden');
-  } else {
-    scale.classList.remove('hidden');
-  }
+  togleScale();
 };
 
 var isCorrect = function (evt, obj) {
   var target = evt.target;
-  var result;
-  if (evt.type === 'click') {
-    result = obj === target;
-    return result;
-  }
-  return evt.keyCode === ENTER_CODE && obj === target;
+  var isEnter = evt.keyCode === ENTER_CODE;
+  var isCorrectObj = obj === target;
+  return !evt.keyCode && isCorrectObj;
 };
 
 var uploadImg = function (evt) {
@@ -166,21 +162,11 @@ var uploadImg = function (evt) {
   } else if (isCorrect(evt, uploadCancel)) {
     closePopup();
   } else if (isCorrect(evt, btnUp)) {
-    setSizeUp(evt);
+    setSizeUp();
   } else if (isCorrect(evt, btnDown)) {
-    setSizeDown(evt);
+    setSizeDown();
   }
 };
-
-uploadFile.addEventListener('change', function () {
-  imgOverlay.classList.remove('hidden');
-  scale.classList.add('hidden');
-
-  effectsImg.addEventListener('click', setEffect);
-  scaleLine.addEventListener('mouseup', changeScale);
-  imgOverlay.addEventListener('click', uploadImg);
-  document.addEventListener('keydown', uploadImg);
-});
 
 // генерирует случайное число от -0.5 до 0.5
 var getCompareRandom = function () {
@@ -328,13 +314,10 @@ var renderBigPhoto = function (object) {
 };
 
 var closePicture = function (evt) {
-  var cancel = bigPicture.querySelector('.big-picture__cancel');
-  if (evt.target === cancel) {
-    if (evt.keyCode === ESC_CODE) {
-      bigPicture.classList.add('hidden');
-    } else {
-      bigPicture.classList.add('hidden');
-    }
+  if (evt.keyCode === ESC_CODE) {
+    bigPicture.classList.add('hidden');
+  } else {
+    bigPicture.classList.add('hidden');
   }
 };
 
@@ -352,7 +335,16 @@ for (var i = 0; i < pictureLink.length; i++) {
     }
 
     document.addEventListener('keydown', closePicture);
-    bigPicture.addEventListener('click', closePicture);
+    cancel.addEventListener('click', closePicture);
   });
 }
 
+uploadFile.addEventListener('change', function () {
+  scale.classList.add('hidden');
+  imgOverlay.classList.remove('hidden');
+
+  imgOverlay.addEventListener('click', uploadImg);
+  effectsImg.addEventListener('click', setEffect);
+  scaleLine.addEventListener('mouseup', changeScale);
+  document.addEventListener('keydown', uploadImg);
+});
