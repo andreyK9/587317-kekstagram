@@ -4,7 +4,6 @@ var LIKES_RANGE = [15, 200];
 var PICTURE_RANGE = 25;
 var RESIZE_STEP = 25;
 var ESC_CODE = 27;
-var ENTER_CODE = 13;
 var DEFAULT_POSITION = 100;
 var ARRAY_COMMENT = [
   'В целом всё неплохо. Но не всё.',
@@ -56,7 +55,6 @@ var imgUpload = document.querySelector('.img-upload');
 var uploadFile = imgUpload.querySelector('#upload-file');
 var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
 var uploadCancel = imgOverlay.querySelector('#upload-cancel');
-var resize = imgOverlay.querySelector('.resize');
 var btnUp = imgOverlay.querySelector('.resize__control--plus');
 var btnDown = imgOverlay.querySelector('.resize__control--minus');
 var resizeControl = imgOverlay.querySelector('.resize__control--value');
@@ -119,25 +117,29 @@ var closePopup = function () {
 var setResize = function (value) {
   resizeControl.value = value + '%';
   if (value === 100) {
-    return imgPreview.style.transform = '';
+    imgPreview.style.transform = '';
+    return false;
   }
-  return imgPreview.style.transform = 'scale(' + value / 100 + ')';
+  imgPreview.style.transform = 'scale(' + value / 100 + ')';
+  return true;
 };
 
-var setSizeUp = function (evt) {
+var setSizeUp = function () {
   var value = +resizeControl.value.slice(0, -1);
   if (value > 75) {
     return value;
   }
-  return setResize(value + RESIZE_STEP);
+  setResize(value + RESIZE_STEP);
+  return true;
 };
 
-var setSizeDown = function (evt) {
+var setSizeDown = function () {
   var value = +resizeControl.value.slice(0, -1);
   if (value < 50) {
     return value;
   }
-  return setResize(value - RESIZE_STEP);
+  setResize(value - RESIZE_STEP);
+  return true;
 };
 
 var setEffect = function (evt) {
@@ -151,7 +153,6 @@ var setEffect = function (evt) {
 
 var isCorrect = function (evt, obj) {
   var target = evt.target;
-  var isEnter = evt.keyCode === ENTER_CODE;
   var isCorrectObj = obj === target;
   return !evt.keyCode && isCorrectObj;
 };
