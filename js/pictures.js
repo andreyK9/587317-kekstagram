@@ -22,32 +22,37 @@ var ARRAY_DESCRIPTION = [
 var filterGroup = {
   chrome: {
     filter: 'filter: grayscale(',
+    unit: ')',
     getValue: function (value) {
-      return value / 100 + ')';
+      return value / 100;
     }
   },
   sepia: {
     filter: 'filter: sepia(',
+    unit: ')',
     getValue: function (value) {
-      return value / 100 + ')';
+      return value / 100;
     }
   },
   marvin: {
     filter: 'filter: invert(',
+    unit: '%)',
     getValue: function (value) {
-      return value + '%)';
+      return value;
     }
   },
   phobos: {
     filter: 'filter: blur(',
+    unit: 'px)',
     getValue: function (value) {
-      return value / 100 * 3 + 'px)';
+      return value / 100 * 3;
     }
   },
   heat: {
     filter: 'filter: brightness(',
+    unit: ')',
     getValue: function (value) {
-      return value / 100 * 3 + ')';
+      return value / 100 * 3;
     }
   }
 };
@@ -68,7 +73,7 @@ var scaleValue = scale.querySelector('.scale__value');
 var bigPicture = document.querySelector('.big-picture');
 var cancel = bigPicture.querySelector('.big-picture__cancel');
 
-var getScale = function (event) {
+var saturEffect = function (event) {
   var x = event.offsetX;
   var persent = scaleLine.clientWidth / 100;
   return Math.round(x / persent);
@@ -89,13 +94,13 @@ var togleScale = function () {
 };
 
 var changeScale = function (evt) {
-  var result = getScale(evt);
+  var result = saturEffect(evt);
   setScale(result);
   setFilter(result);
 };
 
-var getFilter = function (obj, value) {
-  return obj.filter + obj.getValue(value);
+var getFilter = function (filter, value) {
+  return filter.filter + filter.getValue(value) + filter.unit;
 };
 
 var setFilter = function (result) {
@@ -110,8 +115,8 @@ var closePopup = function () {
 
   effectsImg.removeEventListener('click', setEffect);
   scaleLine.removeEventListener('mouseup', changeScale);
-  imgOverlay.removeEventListener('click', uploadImg);
-  document.removeEventListener('keydown', uploadImg);
+  imgOverlay.removeEventListener('click', managEvent);
+  document.removeEventListener('keydown', managEvent);
 };
 
 var setResize = function (value) {
@@ -147,25 +152,22 @@ var setEffect = function (evt) {
   imgPreview.style.filter = '';
   setScale(DEFAULT_POSITION);
   imgPreview.setAttribute('class', 'effects__preview--' + value);
-
   togleScale();
 };
 
-var isCorrect = function (evt, obj) {
-  var target = evt.target;
-  var isCorrectObj = obj === target;
-  return !evt.keyCode && isCorrectObj;
-};
-
-var uploadImg = function (evt) {
+var managEvent = function (evt) {
   if (evt.keyCode === ESC_CODE) {
     closePopup();
-  } else if (isCorrect(evt, uploadCancel)) {
-    closePopup();
-  } else if (isCorrect(evt, btnUp)) {
-    setSizeUp();
-  } else if (isCorrect(evt, btnDown)) {
-    setSizeDown();
+  } else {
+    if (!evt.keyCode) {
+      if (evt.target === uploadCancel) {
+        closePopup();
+      } else if (evt.target === btnUp) {
+        setSizeUp();
+      } else if (evt.target === btnDown) {
+        setSizeDown();
+      }
+    }
   }
 };
 
@@ -314,12 +316,8 @@ var renderBigPhoto = function (object) {
   bigPicture.classList.remove('hidden');
 };
 
-var closePicture = function (evt) {
-  if (evt.keyCode === ESC_CODE) {
-    bigPicture.classList.add('hidden');
-  } else {
-    bigPicture.classList.add('hidden');
-  }
+var closePicture = function () {
+  bigPicture.classList.add('hidden');
 };
 
 var galleryData = fillGalleryData();
@@ -344,8 +342,8 @@ uploadFile.addEventListener('change', function () {
   scale.classList.add('hidden');
   imgOverlay.classList.remove('hidden');
 
-  imgOverlay.addEventListener('click', uploadImg);
+  imgOverlay.addEventListener('click', managEvent);
   effectsImg.addEventListener('click', setEffect);
   scaleLine.addEventListener('mouseup', changeScale);
-  document.addEventListener('keydown', uploadImg);
+  document.addEventListener('keydown', managEvent);
 });
