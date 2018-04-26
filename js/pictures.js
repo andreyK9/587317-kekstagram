@@ -73,6 +73,7 @@ var scaleValue = scale.querySelector('.scale__value');
 var bigPicture = document.querySelector('.big-picture');
 var cancel = bigPicture.querySelector('.big-picture__cancel');
 
+
 var saturEffect = function (event) {
   var x = event.offsetX;
   var persent = scaleLine.clientWidth / 100;
@@ -328,7 +329,7 @@ var pictureLink = document.querySelectorAll('.picture__link');
 
 for (var i = 0; i < pictureLink.length; i++) {
   pictureLink[i].addEventListener('click', function (evt) {
-
+    evt.preventDefault();
     if (evt.target.parentElement.dataset.number) {
       renderBigPhoto(galleryData[evt.target.parentElement.dataset.number]);
     }
