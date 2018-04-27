@@ -21,36 +21,36 @@ var ARRAY_DESCRIPTION = [
 ];
 var filterGroup = {
   chrome: {
-    filter: 'filter: grayscale(',
-    unit: ')',
+    filter: 'grayscale',
+    unit: null,
     getValue: function (value) {
       return value / 100;
     }
   },
   sepia: {
-    filter: 'filter: sepia(',
-    unit: ')',
+    filter: 'sepia',
+    unit: null,
     getValue: function (value) {
       return value / 100;
     }
   },
   marvin: {
-    filter: 'filter: invert(',
-    unit: '%)',
+    filter: 'invert',
+    unit: '%',
     getValue: function (value) {
       return value;
     }
   },
   phobos: {
-    filter: 'filter: blur(',
-    unit: 'px)',
+    filter: 'blur',
+    unit: 'px',
     getValue: function (value) {
       return value / 100 * 3;
     }
   },
   heat: {
-    filter: 'filter: brightness(',
-    unit: ')',
+    filter: 'brightness',
+    unit: null,
     getValue: function (value) {
       return value / 100 * 3;
     }
@@ -74,19 +74,19 @@ var bigPicture = document.querySelector('.big-picture');
 var cancel = bigPicture.querySelector('.big-picture__cancel');
 
 
-var saturEffect = function (event) {
+var getLevelSaturation = function (event) {
   var x = event.offsetX;
   var persent = scaleLine.clientWidth / 100;
   return Math.round(x / persent);
 };
 
-var setScale = function (value) {
+var setLevelSaturation = function (value) {
   scalePin.style.left = value + '%';
   scaleLevel.style.width = value + '%';
   scaleValue.value = value;
 };
 
-var togleScale = function () {
+var togleScaleSaturation = function () {
   if (imgPreview.classList.value === 'effects__preview--none') {
     scale.classList.add('hidden');
   } else {
@@ -94,20 +94,20 @@ var togleScale = function () {
   }
 };
 
-var changeScale = function (evt) {
-  var result = saturEffect(evt);
-  setScale(result);
-  setFilter(result);
+var setEffectSaturation = function (evt) {
+  var saturationValue = getLevelSaturation(evt);
+  setLevelSaturation(saturationValue);
+  setFilterSaturation(saturationValue);
 };
 
-var getFilter = function (filter, value) {
-  return filter.filter + filter.getValue(value) + filter.unit;
+var getFilterSaturation = function (filter, value) {
+  return 'filter: ' + filter.filter + '(' + filter.getValue(value) + (filter.unit ? filter.unit : '') + ')';
 };
 
-var setFilter = function (result) {
+var setFilterSaturation = function (result) {
   var modif = imgPreview.classList.value.split('--').pop();
   var insert = imgPreview.style;
-  insert.cssText = getFilter(filterGroup[modif], result);
+  insert.cssText = getFilterSaturation(filterGroup[modif], result);
 };
 
 var closePopup = function () {
@@ -115,9 +115,9 @@ var closePopup = function () {
   uploadFile.value = '';
 
   effectsImg.removeEventListener('click', setEffect);
-  scaleLine.removeEventListener('mouseup', changeScale);
-  imgOverlay.removeEventListener('click', managEvent);
-  document.removeEventListener('keydown', managEvent);
+  scaleLine.removeEventListener('mouseup', setEffectSaturation);
+  imgOverlay.removeEventListener('click', manageEvent);
+  document.removeEventListener('keydown', manageEvent);
 };
 
 var setResize = function (value) {
@@ -151,12 +151,12 @@ var setSizeDown = function () {
 var setEffect = function (evt) {
   var value = evt.target.value;
   imgPreview.style.filter = '';
-  setScale(DEFAULT_POSITION);
+  setLevelSaturation(DEFAULT_POSITION);
   imgPreview.setAttribute('class', 'effects__preview--' + value);
-  togleScale();
+  togleScaleSaturation();
 };
 
-var managEvent = function (evt) {
+var manageEvent = function (evt) {
   if (evt.keyCode === ESC_CODE) {
     closePopup();
   } else {
@@ -343,8 +343,8 @@ uploadFile.addEventListener('change', function () {
   scale.classList.add('hidden');
   imgOverlay.classList.remove('hidden');
 
-  imgOverlay.addEventListener('click', managEvent);
+  imgOverlay.addEventListener('click', manageEvent);
   effectsImg.addEventListener('click', setEffect);
-  scaleLine.addEventListener('mouseup', changeScale);
-  document.addEventListener('keydown', managEvent);
+  scaleLine.addEventListener('mouseup', setEffectSaturation);
+  document.addEventListener('keydown', manageEvent);
 });
