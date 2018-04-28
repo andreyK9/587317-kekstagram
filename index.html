@@ -53,15 +53,15 @@
               <div class="img-upload__wrapper">
                 <div class="img-upload__preview-container">
 
-                  <fieldset class="img-upload__resize resize">
-                    <button type="button" class="resize__control resize__control--minus">Уменьшить</button>
-                    <input type="text" class="resize__control resize__control--value" value="55%" title="Image Scale" name="scale" readonly>
-                    <button type="button" class="resize__control resize__control--plus">Увеличить</button>
-                  </fieldset>
-
                   <div class="img-upload__preview">
                     <img src="img/upload-default-image.jpg" width="586" height="587" alt="Предварительный просмотр фотографии">
                   </div>
+
+                  <fieldset class="img-upload__resize resize">
+                    <button type="button" class="resize__control resize__control--minus">Уменьшить</button>
+                    <input type="text" class="resize__control resize__control--value" value="100%" title="Image Scale" name="scale" readonly>
+                    <button type="button" class="resize__control resize__control--plus">Увеличить</button>
+                  </fieldset>
 
                   <fieldset class="img-upload__scale scale">
                     <input type="number" class="scale__value" name="effect-level" value="20">
@@ -77,7 +77,7 @@
                 <fieldset class="img-upload__effects effects">
                   <ul class="effects__list">
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-none" value="none">
+                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-none" value="none" checked>
                       <label for="effect-none" class="effects__label">
                         <span class="effects__preview effects__preview--none">Превью фото без эффекта</span>
                         Оригинал
@@ -112,7 +112,7 @@
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-heat" value="heat" checked>
+                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-heat" value="heat">
                       <label for="effect-heat" class="effects__label">
                         <span class="effects__preview effects__preview--heat">Превью эффекта Зной</span>
                         Зной
@@ -151,14 +151,6 @@
           <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
           <div class="social__comment-loadmore">Загрузить еще</div>
           <ul class="social__comments">
-            <li class="social__comment social__comment--text">
-              <img class="social__picture" src="img/avatar-4.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-              Мега фото! Просто обалдеть. Как вам так удалось?
-            </li>
-            <li class="social__comment social__comment--text">
-              <img class="social__picture" src="img/avatar-3.svg" alt="Аватар комментатора фотографии" width="35" height="35">
-               Да это фоташоп!!!!!!!!
-            </li>
           </ul>
           <div class="social__footer">
             <img class="social__picture" src="img/avatar-6.svg" alt="Аватар комментатора фотографии" width="35" height="35">
@@ -197,7 +189,7 @@
   </footer>
 
   <template id="picture">
-    <a href="#" class="picture__link">
+    <a href="#" class="picture__link" data-number="0">
       <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
       <p class="picture__stats">
         <span class="picture__stat picture__stat--comments"></span>
