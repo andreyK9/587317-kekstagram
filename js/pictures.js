@@ -65,6 +65,7 @@ var btnDown = imgOverlay.querySelector('.resize__control--minus');
 var resizeControl = imgOverlay.querySelector('.resize__control--value');
 var imgPreview = imgOverlay.querySelector('.img-upload__preview > img');
 var effectsImg = imgOverlay.querySelector('.effects__list');
+var textHashTags = imgOverlay.querySelector('.text__hashtags');
 var scale = imgOverlay.querySelector('.scale');
 var scalePin = scale.querySelector('.scale__pin');
 var scaleLine = scale.querySelector('.scale__line');
@@ -156,6 +157,27 @@ var setEffect = function (evt) {
   togleScaleSaturation();
 };
 
+var setHashTags = function () {
+  if (!textHashTags.value) {
+    return false;
+  }
+  var hashList = textHashTags.value.split(' ');
+
+
+
+  textHashTags.addEventListener('invalid', function (evt) {
+    console.log('invalid work');
+  });
+
+  textHashTags.setCustomValidity('Имя должно состоять');
+
+  hashList.forEach( function( hash, iteration ) {
+    if (hash[0] !== '#') {
+      console.log('work');
+    }
+  });
+};
+
 var manageEvent = function (evt) {
   if (evt.keyCode === ESC_CODE) {
     closePopup();
@@ -167,6 +189,8 @@ var manageEvent = function (evt) {
         setSizeUp();
       } else if (evt.target === btnDown) {
         setSizeDown();
+      } else if (evt.target === textHashTags) {
+        setHashTags();
       }
     }
   }
@@ -343,6 +367,7 @@ uploadFile.addEventListener('change', function () {
   scale.classList.add('hidden');
   imgOverlay.classList.remove('hidden');
 
+  imgOverlay.addEventListener('change', manageEvent);
   imgOverlay.addEventListener('click', manageEvent);
   effectsImg.addEventListener('click', setEffect);
   scaleLine.addEventListener('mouseup', setEffectSaturation);
