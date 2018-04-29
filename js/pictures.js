@@ -167,7 +167,7 @@ var isArrayUnique = function (str) {
   var arr = str.toLowerCase().split(' ');
   arr.forEach(function (item, iteration) {
     var repeat = arr.indexOf(item);
-    if (repeat >= 0 ) {
+    if (repeat >= 0) {
       if (repeat !== iteration) {
         result = true;
       }
@@ -182,27 +182,28 @@ var checkHashTags = function () {
   }
 
   var hashList = hashTags.value.split(' ');
-  hashList.forEach( function( hash, iteration ) {
+  hashList.forEach(function (hash, iteration) {
     if (hash[0] !== '#') {
-      hashTags.setCustomValidity("Хэш-тег начинается с символа # (решётка)");
-      return;
+      hashTags.setCustomValidity('Хэш-тег начинается с символа # (решётка)');
+      return true;
     } else if (hash.length === hashOption.MIN_LENGTH) {
-      hashTags.setCustomValidity("Хеш-тег не может состоять только из одной решётки");
-      return;
+      hashTags.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+      return true;
     } else if (hash.length > hashOption.MAX_LENGTH) {
-      hashTags.setCustomValidity("Максимальная длина одного хэш-тега 20 символов");
-      return;
+      hashTags.setCustomValidity('Максимальная длина одного хэш-тега 20 символов');
+      return true;
     } else if (isArrayUnique(hashTags.value)) {
-      hashTags.setCustomValidity("Хеш-теги не должны повторяться");
-      return;
+      hashTags.setCustomValidity('Хеш-теги не должны повторяться');
+      return true;
     } else if (iteration > HASH_GROUP_MAX_LENGTH) {
-      hashTags.setCustomValidity("Хеш-тегов не должно быть больше 5");
-      return;
+      hashTags.setCustomValidity('Хеш-тегов не должно быть больше 5');
+      return true;
     } else {
       hashTags.setCustomValidity('');
-      return;
+      return true;
     }
   });
+  return true;
 };
 
 var checksText = function () {
@@ -211,10 +212,11 @@ var checksText = function () {
   }
 
   if (imgUploadText.value.length > TEXT_MAX_LENGTH) {
-    imgUploadText.setCustomValidity("Длина комментария не может составлять больше 140 символов");
+    imgUploadText.setCustomValidity('Длина комментария не может составлять больше 140 символов');
   } else {
     imgUploadText.setCustomValidity('');
   }
+  return true;
 };
 
 var manageEvent = function (evt) {
@@ -232,7 +234,7 @@ var manageEvent = function (evt) {
         setSizeDown();
       } else if (evt.target === hashTags) {
         checkHashTags();
-      }else if (evt.target === imgUploadText) {
+      } else if (evt.target === imgUploadText) {
         checksText();
       }
     }
