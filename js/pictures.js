@@ -58,6 +58,8 @@ var togleScaleSaturation = function () {
 var closePopup = function () {
   imgOverlay.classList.add('hidden');
   uploadFile.value = '';
+  imgPreview.style.filter = '';
+  imgPreview.setAttribute('class', 'effects__preview--none');
 
   imgOverlay.removeEventListener('change', manageEvent);
   imgOverlay.removeEventListener('click', manageEvent);
