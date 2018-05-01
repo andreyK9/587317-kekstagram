@@ -3,7 +3,6 @@
 var TEXT_MAX_LENGTH = 140;
 var hashOption = {MIN_LENGTH: 1, MAX_LENGTH: 20};
 var HASH_GROUP_MAX_LENGTH = 4;
-
 var LIKES_RANGE = [15, 200];
 var PICTURE_RANGE = 25;
 var RESIZE_STEP = 25;
@@ -23,43 +22,6 @@ var ARRAY_DESCRIPTION = [
   'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
   'Вот это тачка!'
 ];
-var filterGroup = {
-  chrome: {
-    filter: 'grayscale',
-    unit: null,
-    getValue: function (value) {
-      return value / 100;
-    }
-  },
-  sepia: {
-    filter: 'sepia',
-    unit: null,
-    getValue: function (value) {
-      return value / 100;
-    }
-  },
-  marvin: {
-    filter: 'invert',
-    unit: '%',
-    getValue: function (value) {
-      return value;
-    }
-  },
-  phobos: {
-    filter: 'blur',
-    unit: 'px',
-    getValue: function (value) {
-      return value / 100 * 3;
-    }
-  },
-  heat: {
-    filter: 'brightness',
-    unit: null,
-    getValue: function (value) {
-      return value / 100 * 3;
-    }
-  }
-};
 var imgUpload = document.querySelector('.img-upload');
 var uploadFile = imgUpload.querySelector('#upload-file');
 var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
@@ -73,23 +35,16 @@ var hashTags = imgOverlay.querySelector('.text__hashtags');
 var imgUploadText = imgOverlay.querySelector('.text__description');
 var scale = imgOverlay.querySelector('.scale');
 var scalePin = scale.querySelector('.scale__pin');
-var scaleLine = scale.querySelector('.scale__line');
 var scaleLevel = scale.querySelector('.scale__level');
 var scaleValue = scale.querySelector('.scale__value');
 var bigPicture = document.querySelector('.big-picture');
 var cancel = bigPicture.querySelector('.big-picture__cancel');
 
 
-var getLevelSaturation = function (event) {
-  var x = event.offsetX;
-  var persent = scaleLine.clientWidth / 100;
-  return Math.round(x / persent);
-};
-
 var setLevelSaturation = function (value) {
   scalePin.style.left = value + '%';
   scaleLevel.style.width = value + '%';
-  scaleValue.value = value;
+  scaleValue.defaultValue = value;
 };
 
 var togleScaleSaturation = function () {
@@ -100,29 +55,16 @@ var togleScaleSaturation = function () {
   }
 };
 
-var setEffectSaturation = function (evt) {
-  var saturationValue = getLevelSaturation(evt);
-  setLevelSaturation(saturationValue);
-  setFilterSaturation(saturationValue);
-};
-
-var getFilterSaturation = function (filter, value) {
-  return 'filter: ' + filter.filter + '(' + filter.getValue(value) + (filter.unit ? filter.unit : '') + ')';
-};
-
-var setFilterSaturation = function (result) {
-  var modif = imgPreview.classList.value.split('--').pop();
-  var insert = imgPreview.style;
-  insert.cssText = getFilterSaturation(filterGroup[modif], result);
-};
-
 var closePopup = function () {
   imgOverlay.classList.add('hidden');
   uploadFile.value = '';
+  imgPreview.style.filter = '';
+  imgPreview.setAttribute('class', 'effects__preview--none');
 
-  effectsImg.removeEventListener('click', setEffect);
-  scaleLine.removeEventListener('mouseup', setEffectSaturation);
+  imgOverlay.removeEventListener('change', manageEvent);
   imgOverlay.removeEventListener('click', manageEvent);
+  effectsImg.removeEventListener('click', setEffectType);
+  // scaleLine.removeEventListener('mouseup', onEffectSaturationSet);
   document.removeEventListener('keydown', manageEvent);
 };
 
@@ -154,9 +96,11 @@ var setSizeDown = function () {
   return true;
 };
 
-var setEffect = function (evt) {
+var setEffectType = function (evt) {
   var value = evt.target.value;
   imgPreview.style.filter = '';
+  scale.maxCoord = null;
+  scale.minCoord = null;
   setLevelSaturation(DEFAULT_POSITION);
   imgPreview.setAttribute('class', 'effects__preview--' + value);
   togleScaleSaturation();
@@ -414,7 +358,7 @@ uploadFile.addEventListener('change', function () {
 
   imgOverlay.addEventListener('change', manageEvent);
   imgOverlay.addEventListener('click', manageEvent);
-  effectsImg.addEventListener('click', setEffect);
-  scaleLine.addEventListener('mouseup', setEffectSaturation);
+  effectsImg.addEventListener('click', setEffectType);
+  // scaleLine.addEventListener('mouseup', onEffectSaturationSet);
   document.addEventListener('keydown', manageEvent);
 });
