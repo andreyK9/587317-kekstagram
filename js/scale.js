@@ -57,7 +57,7 @@ var scaleFeature = {MAX_LENGTH: 100, MIN_LENGTH: 0, maxCoord: null, minCoord: nu
     return 'filter: ' + filter.filter + '(' + filter.getValue(value) + (filter.unit ? filter.unit : '') + ')';
   };
 
-  var onEffectSaturationChange = function (evt) {
+  var onEffectSaturationTouch = function (evt) {
     evt.preventDefault();
     scaleFeature.maxCoord = scaleFeature.maxCoord ? scaleFeature.maxCoord : evt.clientX;
     scaleFeature.minCoord = scaleFeature.minCoord ? scaleFeature.minCoord : scaleFeature.maxCoord - line.clientWidth;
@@ -81,7 +81,7 @@ var scaleFeature = {MAX_LENGTH: 100, MIN_LENGTH: 0, maxCoord: null, minCoord: nu
       scaleValue.defaultValue = value;
     };
 
-    var onEffectSaturationSet = function (moveEvt) {
+    var onEffectSaturationMove = function (moveEvt) {
       var saturationValue = getLevelSaturation(moveEvt);
       setLevelSaturation(saturationValue);
       setFilterSaturation(saturationValue);
@@ -90,13 +90,13 @@ var scaleFeature = {MAX_LENGTH: 100, MIN_LENGTH: 0, maxCoord: null, minCoord: nu
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onEffectSaturationSet);
+      document.removeEventListener('mousemove', onEffectSaturationMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
 
-    document.addEventListener('mousemove', onEffectSaturationSet);
+    document.addEventListener('mousemove', onEffectSaturationMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  pin.addEventListener('mousedown', onEffectSaturationChange);
+  pin.addEventListener('mousedown', onEffectSaturationTouch);
 })();
