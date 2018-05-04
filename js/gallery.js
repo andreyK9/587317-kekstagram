@@ -1,8 +1,10 @@
 'use strict';
 (function () {
-  var galleryData = window.data.fillGalleryData();
-  var galleryTemplate = window.pictures.fillGalleryTemplate(galleryData);
-  window.pictures.renderGallery(galleryTemplate);
-  window.preview.addListener(galleryData);
-  window.form.addListener();
+  var setGalaryData = function (galary) {
+    window.pictures.renderGallery(galary);
+    window.preview.addListener(galary);
+    window.form.addListener();
+  }
+
+  window.backend.load(setGalaryData, window.backend.errorMessage);
 })();

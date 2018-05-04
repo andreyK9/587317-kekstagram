@@ -54,7 +54,7 @@
   var fillBigPhoto = function (element, object) {
     element.querySelector('.big-picture__img > img').src = object.url;
     element.querySelector('.likes-count').textContent = object.likes;
-    element.querySelector('.social__caption').textContent = object.description;
+    element.querySelector('.social__caption').textContent = object.comments[0];
     element.querySelector('.comments-count').textContent = object.comments.length;
   };
 
