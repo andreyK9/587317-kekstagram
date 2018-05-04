@@ -890,7 +890,7 @@ main {
   top: 60px;
   left: 50%;
 
-  min-width: 600px;
+  max-width: 600px;
   min-height: 600px;
 
   padding-bottom: 60px;
@@ -914,7 +914,7 @@ main {
       -ms-flex-direction: column;
           flex-direction: column;
 
-  min-width: 600px;
+  max-width: 600px;
 
   color: #000000;
   font-family: "Open Sans", "Arial", sans-serif;
@@ -949,10 +949,12 @@ main {
 
 .social__caption {
   margin: 0;
+  margin-right: 15px;
 }
 
 .social__likes {
   margin-left: auto;
+  min-width: 125px;
 }
 
 .likes-count {
@@ -1039,6 +1041,7 @@ main {
 
 .social__comment--text {
   padding-left: 15px;
+  padding-bottom: 20px;
 
   display: -webkit-box;
   display: -ms-flexbox;
