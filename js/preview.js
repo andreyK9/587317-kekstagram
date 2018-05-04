@@ -78,7 +78,7 @@
   };
 
   window.preview = {
-    setBigPhotoListener: function (dataList) {
+    addListener: function (dataList) {
       var pictureLink = document.querySelectorAll('.picture__link');
       for (var i = 0; i < pictureLink.length; i++) {
         pictureLink[i].addEventListener('click', function (evt) {

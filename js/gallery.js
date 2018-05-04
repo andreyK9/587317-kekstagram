@@ -3,6 +3,6 @@
   var galleryData = window.data.fillGalleryData();
   var galleryTemplate = window.pictures.fillGalleryTemplate(galleryData);
   window.pictures.renderGallery(galleryTemplate);
-  window.preview.setBigPhotoListener(galleryData);
+  window.preview.addListener(galleryData);
   window.form.addListener();
 })();

@@ -127,12 +127,11 @@
     imgPreview.style.filter = '';
     imgPreview.style.transform = '';
     imgPreview.setAttribute('class', 'effects__preview--none');
-
-    imgOverlay.removeEventListener('change', manageEvent);
-    imgOverlay.removeEventListener('click', manageEvent);
+    imgOverlay.removeEventListener('change', onEventManage);
+    imgOverlay.removeEventListener('click', onEventManage);
     effectsImg.removeEventListener('click', setEffectType);
     pin.removeEventListener('mousedown', onEffectSaturationTouch);
-    document.removeEventListener('keydown', manageEvent);
+    document.removeEventListener('keydown', onEventManage);
   };
 
   var setResize = function (value) {
@@ -230,7 +229,7 @@
     return true;
   };
 
-  var manageEvent = function (evt) {
+  var onEventManage = function (evt) {
     if (evt.keyCode === ESC_CODE) {
       if (evt.target !== hashTags && evt.target !== imgUploadText) {
         closePopup();
@@ -258,11 +257,11 @@
         scaleBlock.classList.add('hidden');
         imgOverlay.classList.remove('hidden');
 
-        imgOverlay.addEventListener('change', manageEvent);
-        imgOverlay.addEventListener('click', manageEvent);
+        imgOverlay.addEventListener('change', onEventManage);
+        imgOverlay.addEventListener('click', onEventManage);
         effectsImg.addEventListener('click', setEffectType);
         pin.addEventListener('mousedown', onEffectSaturationTouch);
-        document.addEventListener('keydown', manageEvent);
+        document.addEventListener('keydown', onEventManage);
       });
     }
   };
