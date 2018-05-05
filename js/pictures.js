@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var block = document.querySelector('.pictures');
+
   // заполнение данными изображения
   var fillPhotoTemplate = function (object) {
     var temp = document.querySelector('#picture').content.cloneNode(true);
@@ -12,19 +14,15 @@
   };
 
   window.pictures = {
-    fillGalleryTemplate: function (arr) {
+    renderGallery: function (pictureList) {
       var template = document.createDocumentFragment();
 
-      for (var i = 0; i < arr.length; i++) {
-        var photo = fillPhotoTemplate(arr[i]);
-        photo.querySelector('.picture__link').dataset.number = i;
-        template.appendChild(photo);
+      for (var i = 0; i < pictureList.length; i++) {
+        var picture = fillPhotoTemplate(pictureList[i]);
+        picture.querySelector('.picture__link').dataset.number = i;
+        template.appendChild(picture);
       }
 
-      return template;
-    },
-    renderGallery: function (template) {
-      var block = document.querySelector('.pictures');
       block.appendChild(template);
     }
   };

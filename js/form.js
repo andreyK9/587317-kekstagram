@@ -9,6 +9,7 @@
   var ESC_CODE = 27;
   var DEFAULT_POSITION = 100;
   var imgUpload = document.querySelector('.img-upload');
+  var form = document.querySelector('.img-upload__form');
   var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
   var uploadCancel = imgOverlay.querySelector('#upload-cancel');
   var btnUp = imgOverlay.querySelector('.resize__control--plus');
@@ -16,6 +17,7 @@
   var uploadFile = imgUpload.querySelector('#upload-file');
   var resizeControl = imgOverlay.querySelector('.resize__control--value');
   var effectsImg = imgOverlay.querySelector('.effects__list');
+  var radioBtn = imgOverlay.querySelector('.effects__radio');
   var hashTags = imgOverlay.querySelector('.text__hashtags');
   var imgUploadText = imgOverlay.querySelector('.text__description');
   var scaleBlock = document.querySelector('.scale');
@@ -91,6 +93,13 @@
     scaleValue.defaultValue = value;
   };
 
+  var onFormSubmitTouch = function (evt) {
+    window.backend.save(new FormData(form), function () {
+      closePopup();
+    }, window.backend.errorMessage);
+    evt.preventDefault();
+  };
+
   var onEffectSaturationTouch = function (evt) {
     evt.preventDefault();
     scaleFeature.maxCoord = scaleFeature.maxCoord ? scaleFeature.maxCoord : evt.clientX;
@@ -126,13 +135,17 @@
     uploadFile.value = '';
     imgPreview.style.filter = '';
     imgPreview.style.transform = '';
+    hashTags.value = '';
+    imgUploadText.value = '';
     imgPreview.setAttribute('class', 'effects__preview--none');
-
-    imgOverlay.removeEventListener('change', manageEvent);
-    imgOverlay.removeEventListener('click', manageEvent);
+    setLevelSaturation(DEFAULT_POSITION);
+    setResize(DEFAULT_POSITION);
+    imgOverlay.removeEventListener('change', onEventManage);
+    imgOverlay.removeEventListener('click', onEventManage);
     effectsImg.removeEventListener('click', setEffectType);
+    form.removeEventListener('submit', onFormSubmitTouch);
     pin.removeEventListener('mousedown', onEffectSaturationTouch);
-    document.removeEventListener('keydown', manageEvent);
+    document.removeEventListener('keydown', onEventManage);
   };
 
   var setResize = function (value) {
@@ -230,7 +243,7 @@
     return true;
   };
 
-  var manageEvent = function (evt) {
+  var onEventManage = function (evt) {
     if (evt.keyCode === ESC_CODE) {
       if (evt.target !== hashTags && evt.target !== imgUploadText) {
         closePopup();
@@ -255,14 +268,16 @@
   window.form = {
     addListener: function () {
       uploadFile.addEventListener('change', function () {
+        radioBtn.checked = true;
         scaleBlock.classList.add('hidden');
         imgOverlay.classList.remove('hidden');
 
-        imgOverlay.addEventListener('change', manageEvent);
-        imgOverlay.addEventListener('click', manageEvent);
+        imgOverlay.addEventListener('change', onEventManage);
+        imgOverlay.addEventListener('click', onEventManage);
         effectsImg.addEventListener('click', setEffectType);
+        form.addEventListener('submit', onFormSubmitTouch);
         pin.addEventListener('mousedown', onEffectSaturationTouch);
-        document.addEventListener('keydown', manageEvent);
+        document.addEventListener('keydown', onEventManage);
       });
     }
   };
