@@ -14,6 +14,7 @@
   };
 
   window.pictures = {
+    block: block,
     renderGallery: function (pictureList) {
       var template = document.createDocumentFragment();
 
