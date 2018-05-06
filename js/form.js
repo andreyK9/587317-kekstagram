@@ -97,7 +97,7 @@
   };
 
   var onFormSubmitTouch = function (evt) {
-    window.backend.save(new FormData(imgform), function () {
+    window.backend.save(new FormData(imgForm), function () {
       closePopup();
     }, window.backend.errorMessage);
     evt.preventDefault();
@@ -137,7 +137,7 @@
     imgOverlay.removeEventListener('change', manageEvent);
     imgOverlay.removeEventListener('click', manageEvent);
     effectsImg.removeEventListener('click', setEffectType);
-    imgform.removeEventListener('submit', onFormSubmitTouch);
+    imgForm.removeEventListener('submit', onFormSubmitTouch);
     pin.removeEventListener('mousedown', onEffectSaturationTouch);
     document.removeEventListener('keydown', manageEvent);
   };
@@ -295,7 +295,7 @@
         imgOverlay.addEventListener('change', manageEvent);
         imgOverlay.addEventListener('click', manageEvent);
         effectsImg.addEventListener('click', setEffectType);
-        imgform.addEventListener('submit', onFormSubmitTouch);
+        imgForm.addEventListener('submit', onFormSubmitTouch);
         pin.addEventListener('mousedown', onEffectSaturationTouch);
         document.addEventListener('keydown', manageEvent);
       });
