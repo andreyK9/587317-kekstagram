@@ -19,9 +19,10 @@
       <h2 class="img-filters__title visually-hidden">Фильтр фотографий</h2>
 
       <form class="img-filters__form" action="index.html" method="get" autocomplete="off">
-        <button type=button class="img-filters__button img-filters__button--active" id="filter-popular">Популярные</button>
-        <button type=button class="img-filters__button" id="filter-new">Новые</button>
+        <button type=button class="img-filters__button img-filters__button--active" id="filter-recommended">Рекомендуемые</button>
+        <button type=button class="img-filters__button" id="filter-popular">Популярные</button>
         <button type=button class="img-filters__button" id="filter-discussed">Обсуждаемые</button>
+        <button type=button class="img-filters__button" id="filter-random">Случайные</button>
       </form>
     </section>
 
@@ -45,7 +46,7 @@
             <div class="img-upload__message img-upload__message--error error hidden">Ошибка загрузки файла
               <div class="error__links">
                 <a class="error__link" href="#">Попробовать снова</a>
-                <a class="error__link" href="#">Загрузить другой файл</a>
+                <a class="error__link" href="#"><label for="upload-file">Загрузить другой файл</label></a>
               </div>
             </div>
 
@@ -158,7 +159,7 @@
             <button type="button" class="social__footer-btn" name="button">Отправить</button>
           </div>
         </div>
-        <button type="reset" class="big-picture__cancel cancel" id="picture-cancel">Закрыть</button>
+        <button type="reset" class="big-picture__cancel cancel" id="picture-cancel" tabindex="0">Закрыть</button>
       </div>
     </section>
 
@@ -197,7 +198,9 @@
       </p>
     </a>
   </template>
-<script src="js/data.js"></script>
+
+<script src="js/debounce.js"></script>
+<script src="js/filter.js"></script>
 <script src="js/backend.js"></script>
 <script src="js/form.js"></script>
 <script src="js/pictures.js"></script>
