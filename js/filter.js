@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var currentFilter;
   var DEFAULT_FILTER = 'filter-recommended';
@@ -18,8 +19,18 @@
     },
     'filter-random': function () {
       var resultArr = window.gallery.slice();
-      return window.data.shuffle(resultArr);
+      return shuffle(resultArr);
     }
+  };
+
+  // генерирует случайное число от -0.5 до 0.5
+  var getCompareRandom = function () {
+    return Math.random() - 0.5;
+  };
+
+  // перемешивает массив
+  var shuffle = function (arr) {
+    return arr.sort(getCompareRandom);
   };
 
   var render = function (className) {

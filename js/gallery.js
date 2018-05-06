@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var setGalleryData = function (gallery) {
     window.gallery = gallery.slice();
@@ -7,6 +8,5 @@
     window.form.addListener();
     window.filter.addListener();
   };
-
   window.backend.load(setGalleryData, window.backend.errorMessage);
 })();
