@@ -2,6 +2,7 @@
 (function () {
   var bigPicture = document.querySelector('.big-picture');
   var cancel = bigPicture.querySelector('.big-picture__cancel');
+  var isCorrect = {'click': true, 'Escape': true};
 
   // заполнение иконки аватара атрибутами
   var setAvatarAttr = function (img) {
@@ -73,8 +74,11 @@
     bigPicture.classList.remove('hidden');
   };
 
-  var closePicture = function () {
-    bigPicture.classList.add('hidden');
+  var closePicture = function (evt) {
+    if (isCorrect[evt.code] || isCorrect[evt.type]) {
+      document.body.classList.remove('modal-open');
+      bigPicture.classList.add('hidden');
+    }
   };
 
   window.preview = {
@@ -83,10 +87,15 @@
       for (var i = 0; i < pictureLink.length; i++) {
         pictureLink[i].addEventListener('click', function (evt) {
           evt.preventDefault();
+          var number;
           if (evt.target.parentElement.dataset.number) {
-            renderBigPhoto(dataList[evt.target.parentElement.dataset.number]);
+            number = evt.target.parentElement.dataset.number;
+          } else {
+            number = evt.target.dataset.number;
           }
 
+          renderBigPhoto(dataList[number]);
+          document.body.classList.add('modal-open');
           document.addEventListener('keydown', closePicture);
           cancel.addEventListener('click', closePicture);
         });

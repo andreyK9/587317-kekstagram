@@ -20,7 +20,7 @@
   var radioBtn = imgOverlay.querySelector('.effects__radio');
   var hashTags = imgOverlay.querySelector('.text__hashtags');
   var imgUploadText = imgOverlay.querySelector('.text__description');
-  var imgError =  document.querySelector('.img-upload__message--error');
+  var imgError = document.querySelector('.img-upload__message--error');
   var scaleBlock = document.querySelector('.scale');
   var line = scaleBlock.querySelector('.scale__line');
   var pin = line.querySelector('.scale__pin');
@@ -280,6 +280,7 @@
   };
 
   window.form = {
+    ESC_CODE: ESC_CODE,
     imgOverlay: imgOverlay,
     uploadFile: uploadFile,
     closePopup: closePopup,

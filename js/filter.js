@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var currentFilter;
+  var DEFAULT_FILTER = 'filter-recommended';
   var filterGroup = document.querySelector('.img-filters');
   var filterform = document.querySelector('.img-filters__form');
   var activeClass = 'img-filters__button--active';
@@ -21,9 +22,9 @@
     }
   };
 
-  var renderFilter = function () {
+  var render = function (className) {
     filterform.querySelector('.' + activeClass).classList.remove(activeClass);
-    filterform.querySelector('#filter-recommended').classList.add(activeClass);
+    filterform.querySelector('#' + className).classList.add(activeClass);
     filterGroup.classList.remove('img-filters--inactive');
   };
 
@@ -50,14 +51,16 @@
     window.preview.addListener(resultArr);
   };
 
-  window.filter = function () {
-    renderFilter();
-    filterform.addEventListener('click', function (evt) {
-      filterform.querySelector('.' + activeClass).classList.remove(activeClass);
-      evt.target.classList.add(activeClass);
-      currentFilter = evt.target.id;
+  window.filter = {
+    addListener: function () {
+      render(DEFAULT_FILTER);
+      filterform.addEventListener('click', function (evt) {
+        filterform.querySelector('.' + activeClass).classList.remove(activeClass);
+        evt.target.classList.add(activeClass);
+        currentFilter = evt.target.id;
 
-      window.debounce(changeFilter);
-    });
+        window.debounce(changeFilter);
+      });
+    }
   };
 })();

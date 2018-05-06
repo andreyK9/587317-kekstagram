@@ -5,6 +5,7 @@
     window.pictures.renderGallery(gallery);
     window.preview.addListener(gallery);
     window.form.addListener();
+    window.filter.addListener();
   };
 
   window.backend.load(setGalleryData, window.backend.errorMessage);

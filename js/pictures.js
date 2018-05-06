@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var END_LOAD_VALUE = '24';
   var block = document.querySelector('.pictures');
 
   // заполнение данными изображения
@@ -14,15 +13,6 @@
     return temp;
   };
 
-  var renderFilter = function (evt) {
-    if (evt.target.nodeName !== '#text') {
-      if (evt.target.attributes['data-number'].value === END_LOAD_VALUE) {
-        window.filter();
-        document.removeEventListener("DOMNodeInserted", renderFilter);
-      }
-    }
-  };
-
   window.pictures = {
     block: block,
     renderGallery: function (pictureList) {
@@ -33,7 +23,7 @@
         picture.querySelector('.picture__link').dataset.number = i;
         template.appendChild(picture);
       }
-      document.addEventListener("DOMNodeInserted", renderFilter);
+
       block.appendChild(template);
     }
   };
