@@ -11,7 +11,7 @@
   var ESC_CODE = 27;
   var DEFAULT_POSITION = 100;
   var imgUpload = document.querySelector('.img-upload');
-  var imgform = document.querySelector('.img-upload__form');
+  var imgForm = document.querySelector('.img-upload__form');
   var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
   var uploadCancel = imgOverlay.querySelector('#upload-cancel');
   var btnUp = imgOverlay.querySelector('.resize__control--plus');
@@ -68,9 +68,9 @@
   };
 
   var setFilterSaturation = function (result) {
-    var modif = imgPreview.classList.value.slice(START_POSITION);
+    var modification = imgPreview.classList.value.slice(START_POSITION);
     var insert = imgPreview.style;
-    insert.filter = getFilterSaturation(filterGroup[modif], result);
+    insert.filter = getFilterSaturation(filterGroup[modification], result);
   };
 
   var getFilterSaturation = function (current, value) {
@@ -125,7 +125,7 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  var togleScaleSaturation = function () {
+  var toggleScaleSaturation = function () {
     if (imgPreview.classList.value === 'effects__preview--none') {
       scaleBlock.classList.add('hidden');
     } else {
@@ -199,7 +199,7 @@
     scaleFeature.minCoord = null;
     setLevelSaturation(DEFAULT_POSITION);
     imgPreview.setAttribute('class', 'effects__preview--' + value);
-    togleScaleSaturation();
+    toggleScaleSaturation();
   };
 
   var isArrayUnique = function (str) {
