@@ -3,7 +3,7 @@
   window.backend = {
     load: function (onLoad, onError) {
       var xhr = new XMLHttpRequest();
-      var URL = 'https://js.dump.academy/kekstagram/data';
+      var URL = 'https://js.dump.academy/kekstagram/data/sdfdfdsfsd';
       xhr.responseType = 'json';
 
       xhr.addEventListener('load', function () {
