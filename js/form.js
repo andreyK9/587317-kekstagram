@@ -9,7 +9,7 @@
   var ESC_CODE = 27;
   var DEFAULT_POSITION = 100;
   var imgUpload = document.querySelector('.img-upload');
-  var form = document.querySelector('.img-upload__form');
+  var imgform = document.querySelector('.img-upload__form');
   var imgOverlay = imgUpload.querySelector('.img-upload__overlay');
   var uploadCancel = imgOverlay.querySelector('#upload-cancel');
   var btnUp = imgOverlay.querySelector('.resize__control--plus');
@@ -20,6 +20,7 @@
   var radioBtn = imgOverlay.querySelector('.effects__radio');
   var hashTags = imgOverlay.querySelector('.text__hashtags');
   var imgUploadText = imgOverlay.querySelector('.text__description');
+  var imgError =  document.querySelector('.img-upload__message--error');
   var scaleBlock = document.querySelector('.scale');
   var line = scaleBlock.querySelector('.scale__line');
   var pin = line.querySelector('.scale__pin');
@@ -94,7 +95,7 @@
   };
 
   var onFormSubmitTouch = function (evt) {
-    window.backend.save(new FormData(form), function () {
+    window.backend.save(new FormData(imgform), function () {
       closePopup();
     }, window.backend.errorMessage);
     evt.preventDefault();
@@ -130,22 +131,35 @@
     }
   };
 
-  var closePopup = function () {
-    imgOverlay.classList.add('hidden');
-    uploadFile.value = '';
+  var deleteListener = function () {
+    imgOverlay.removeEventListener('change', manageEvent);
+    imgOverlay.removeEventListener('click', manageEvent);
+    effectsImg.removeEventListener('click', setEffectType);
+    imgform.removeEventListener('submit', onFormSubmitTouch);
+    pin.removeEventListener('mousedown', onEffectSaturationTouch);
+    document.removeEventListener('keydown', manageEvent);
+  };
+
+  var setDefault = function () {
     imgPreview.style.filter = '';
     imgPreview.style.transform = '';
     hashTags.value = '';
     imgUploadText.value = '';
-    imgPreview.setAttribute('class', 'effects__preview--none');
     setLevelSaturation(DEFAULT_POSITION);
     setResize(DEFAULT_POSITION);
-    imgOverlay.removeEventListener('change', manageEvent);
-    imgOverlay.removeEventListener('click', manageEvent);
-    effectsImg.removeEventListener('click', setEffectType);
-    form.removeEventListener('submit', onFormSubmitTouch);
-    pin.removeEventListener('mousedown', onEffectSaturationTouch);
-    document.removeEventListener('keydown', manageEvent);
+    imgPreview.setAttribute('class', 'effects__preview--none');
+  };
+
+  var closePopup = function () {
+    uploadFile.value = '';
+    imgError.classList.add('hidden');
+    imgOverlay.classList.add('hidden');
+    deleteListener();
+  };
+
+  var watchError = function () {
+    imgError.classList.remove('hidden');
+    imgOverlay.classList.add('hidden');
   };
 
   var setResize = function (value) {
@@ -266,16 +280,20 @@
   };
 
   window.form = {
+    imgOverlay: imgOverlay,
+    uploadFile: uploadFile,
+    closePopup: closePopup,
+    watchError: watchError,
     addListener: function () {
       uploadFile.addEventListener('change', function () {
         radioBtn.checked = true;
+        setDefault();
         scaleBlock.classList.add('hidden');
         imgOverlay.classList.remove('hidden');
-
         imgOverlay.addEventListener('change', manageEvent);
         imgOverlay.addEventListener('click', manageEvent);
         effectsImg.addEventListener('click', setEffectType);
-        form.addEventListener('submit', onFormSubmitTouch);
+        imgform.addEventListener('submit', onFormSubmitTouch);
         pin.addEventListener('mousedown', onEffectSaturationTouch);
         document.addEventListener('keydown', manageEvent);
       });
