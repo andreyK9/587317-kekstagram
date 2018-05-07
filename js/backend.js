@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  var errorLinks = document.querySelector('.error__links');
+  var errorLink = document.querySelector('.error__links');
   var REPEAT = 0;
 
   var onErrorLinkClick = function (evt) {
-    if (evt.target === errorLinks.children[REPEAT]) {
+    if (evt.target === errorLink.children[REPEAT]) {
       evt.preventDefault();
       window.form.imgOverlay.classList.remove('hidden');
     } else {
@@ -56,8 +56,8 @@
       xhr.send(data);
     },
     errorMessage: function () {
-      window.form.watchError();
-      errorLinks.addEventListener('click', onErrorLinkClick);
+      window.form.openError();
+      errorLink.addEventListener('click', onErrorLinkClick);
     }
   };
 })();

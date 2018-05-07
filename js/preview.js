@@ -25,10 +25,10 @@
   };
 
   // создание тега
-  var createTag = function (tag, className, text) {
+  var createTag = function (tag, classNames, text) {
     var element = document.createElement(tag);
-    for (var i = 0; i < className.length; i++) {
-      element.classList.add(className[i]);
+    for (var i = 0; i < classNames.length; i++) {
+      element.classList.add(classNames[i]);
     }
     if (text) {
       element.textContent = text;
@@ -81,9 +81,9 @@
 
   window.preview = {
     addListener: function (dataList) {
-      var pictureLink = document.querySelectorAll('.picture__link');
-      for (var i = 0; i < pictureLink.length; i++) {
-        pictureLink[i].addEventListener('click', function (evt) {
+      var pictureLinks = document.querySelectorAll('.picture__link');
+      for (var i = 0; i < pictureLinks.length; i++) {
+        pictureLinks[i].addEventListener('click', function (evt) {
           evt.preventDefault();
           var number;
           if (evt.target.parentElement.dataset.number) {

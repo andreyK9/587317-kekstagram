@@ -109,9 +109,9 @@
     scaleFeature.minCoord = scaleFeature.minCoord ? scaleFeature.minCoord : scaleFeature.maxCoord - line.clientWidth;
 
     var onEffectSaturationMove = function (moveEvt) {
-      var saturationValue = getLevelSaturation(moveEvt);
-      setLevelSaturation(saturationValue);
-      setFilterSaturation(saturationValue);
+      var levelSaturation = getLevelSaturation(moveEvt);
+      setLevelSaturation(levelSaturation);
+      setFilterSaturation(levelSaturation);
     };
 
     var onMouseUp = function (upEvt) {
@@ -159,7 +159,7 @@
     deleteListener();
   };
 
-  var watchError = function () {
+  var openError = function () {
     imgError.classList.remove('hidden');
     imgOverlay.classList.add('hidden');
   };
@@ -285,7 +285,7 @@
     imgOverlay: imgOverlay,
     uploadFile: uploadFile,
     closePopup: closePopup,
-    watchError: watchError,
+    openError: openError,
     addListener: function () {
       uploadFile.addEventListener('change', function () {
         radioBtn.checked = true;

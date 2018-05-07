@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
-  var setGalleryData = function (gallery) {
-    window.gallery = gallery.slice();
-    window.pictures.renderGallery(gallery);
-    window.preview.addListener(gallery);
+  var setGalleryData = function (pictures) {
+    window.gallery = {pictures: pictures.slice()};
+    window.pictures.renderGallery(pictures);
+    window.preview.addListener(pictures);
     window.form.addListener();
     window.filter.addListener();
   };

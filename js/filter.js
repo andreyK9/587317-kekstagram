@@ -9,7 +9,7 @@
   var filterType = {popular: true, discussed: false};
   var filter = {
     'filter-recommended': function () {
-      return window.gallery;
+      return window.gallery.pictures;
     },
     'filter-popular': function () {
       return getSortedPhotos(filterType.popular);
@@ -18,8 +18,8 @@
       return getSortedPhotos(filterType.discussed);
     },
     'filter-random': function () {
-      var resultArr = window.gallery.slice();
-      return shuffle(resultArr);
+      var items = window.gallery.pictures.slice();
+      return shuffle(items);
     }
   };
 
@@ -29,8 +29,8 @@
   };
 
   // перемешивает массив
-  var shuffle = function (arr) {
-    return arr.sort(getCompareRandom);
+  var shuffle = function (items) {
+    return items.sort(getCompareRandom);
   };
 
   var render = function (className) {
@@ -40,26 +40,26 @@
   };
 
   var getSortedPhotos = function (likes) {
-    var resultArr = window.gallery.slice();
-    resultArr.sort(function (left, right) {
-      var rankDiff;
+    var items = window.gallery.pictures.slice();
+    items.sort(function (left, right) {
+      var result;
       if (likes) {
-        rankDiff = right.likes - left.likes;
+        result = right.likes - left.likes;
       } else {
-        rankDiff = right.comments.length - left.comments.length;
+        result = right.comments.length - left.comments.length;
       }
-      return rankDiff;
+      return result;
     });
-    return resultArr;
+    return items;
   };
 
   var changeFilter = function () {
     while (window.pictures.block.children[2]) {
       window.pictures.block.removeChild(window.pictures.block.children[2]);
     }
-    var resultArr = filter[currentFilter]();
-    window.pictures.renderGallery(resultArr);
-    window.preview.addListener(resultArr);
+    var items = filter[currentFilter]();
+    window.pictures.renderGallery(items);
+    window.preview.addListener(items);
   };
 
   window.filter = {
