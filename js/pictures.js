@@ -14,10 +14,10 @@
 
   window.pictures = {
     block: block,
-    renderGallery: function (pictureList) {
+    renderGallery: function (pictures) {
       var template = document.createDocumentFragment();
-      for (var i = 0; i < pictureList.length; i++) {
-        var picture = fillPhotoTemplate(pictureList[i]);
+      for (var i = 0; i < pictures.length; i++) {
+        var picture = fillPhotoTemplate(pictures[i]);
         picture.querySelector('.picture__link').dataset.number = i;
         template.appendChild(picture);
       }

@@ -204,9 +204,9 @@
 
   var isArrayUnique = function (str) {
     var result = false;
-    var arr = str.toLowerCase().split(' ');
-    arr.forEach(function (item, iteration) {
-      var repeat = arr.indexOf(item);
+    var tags = str.toLowerCase().split(' ');
+    tags.forEach(function (item, iteration) {
+      var repeat = tags.indexOf(item);
       if (repeat >= 0) {
         if (repeat !== iteration) {
           result = true;
@@ -221,8 +221,8 @@
       return false;
     }
 
-    var hashList = hashTags.value.split(' ');
-    hashList.forEach(function (hash, iteration) {
+    var tags = hashTags.value.split(' ');
+    tags.forEach(function (hash, iteration) {
       if (hash[0] !== '#') {
         hashTags.setCustomValidity('Хэш-тег начинается с символа # (решётка)');
         return true;

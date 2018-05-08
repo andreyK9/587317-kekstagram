@@ -80,10 +80,10 @@
   };
 
   window.preview = {
-    addListener: function (dataList) {
-      var pictureLinks = document.querySelectorAll('.picture__link');
-      for (var i = 0; i < pictureLinks.length; i++) {
-        pictureLinks[i].addEventListener('click', function (evt) {
+    addListener: function (pictures) {
+      var links = document.querySelectorAll('.picture__link');
+      for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function (evt) {
           evt.preventDefault();
           var number;
           if (evt.target.parentElement.dataset.number) {
@@ -91,7 +91,7 @@
           } else {
             number = evt.target.dataset.number;
           }
-          renderBigPhoto(dataList[number]);
+          renderBigPhoto(pictures[number]);
           document.body.classList.add('modal-open');
           document.addEventListener('keydown', closePicture);
           cancel.addEventListener('click', closePicture);
