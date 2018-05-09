@@ -18,8 +18,8 @@
       return getSortedPhotos(filterType.discussed);
     },
     'filter-random': function () {
-      var items = window.gallery.pictures.slice();
-      return shuffle(items);
+      var pictures = window.gallery.pictures.slice();
+      return shuffle(pictures);
     }
   };
 
