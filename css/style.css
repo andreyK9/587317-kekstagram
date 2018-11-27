@@ -902,6 +902,7 @@ main {
 
 .big-picture__img img {
   display: block;
+  width: 100%;
 }
 
 .social {
