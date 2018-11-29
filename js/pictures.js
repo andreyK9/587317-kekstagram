@@ -20,8 +20,8 @@
         document.querySelector('.pictures')
     appendChilds(pictureElementsContainer, pictureElements)
 
-    document.querySelector('.big-picture').classList.remove('hidden');
     fillBigPicture(pictures[0])
+    document.querySelector('.big-picture').classList.remove('hidden')
   }
 
   function renderComments(comments, commentsContainer) {
@@ -99,6 +99,11 @@
     ]
     const bigPicture = document.querySelector('.big-picture')
     mapObjectOnElement(picture, bigPicture, ObjectElementMap)
+
+    bigPicture.querySelector('.social__comment-count')
+        .classList.add('visually-hidden')
+    bigPicture.querySelector('.social__comment-loadmore')
+        .classList.add('visually-hidden')
 
     renderComments(
         picture.comments, bigPicture.querySelector('.social__comments'))
